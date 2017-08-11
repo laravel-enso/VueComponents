@@ -57,35 +57,25 @@
 				type: Boolean,
 				default: false
 			},
-			height: {
-				type: String,
-				default: ''
+			containerStyle: {
+				type: Object,
+				default() {
+					return {
+						'max-width': '250px'
+					}
+				}
 			},
-			maxHeight: {
-				type: String,
-				default: '500'
-			},
-			maxWidth: {
-				type: String,
-				default: '250'
+			bodyStyle: {
+				type: Object,
+				default() {
+					return {
+						'max-height': '500px'
+					}
+				}
 			},
 			cancelOnly: {
 				type: Boolean,
 				default: false
-			}
-		},
-
-		computed: {
-			containerStyle() {
-				return {
-					'max-width': this.maxWidth + 'px'
-				};
-			},
-			bodyStyle() {
-				return {
-					'max-height': this.maxHeight ? this.maxHeight + 'px' : null,
-					'height' : this.height ? this.height + 'px' : null
-				};
 			}
 		},
 

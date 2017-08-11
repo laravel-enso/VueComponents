@@ -1,18 +1,16 @@
 <template>
 
-	<div class="input-group time-picker">
+	<div class="input-group timepicker">
 		<i class="fa fa-times clear-button btn-box-tool"
-			@click="clearTime"
-			v-if="showClearButton">
+			@click="clear()"
+			v-if="clearButton">
 		</i>
 		<input :id="'input-' + _uid"
-			v-update-time-picker
+			v-timepicker
 			type="text"
 			:name="name"
-			class="form-control"
+			:class="inputClass"
 			:value="value"
-			@input="emitInputEvent"
-			@blur="hideWidget"
 			:disabled="disabled">
 		<span class="input-group-addon">
 			<i class="fa fa-clock-o"></i>
@@ -33,55 +31,46 @@
                 type: String,
                 default: null
             },
-        	clearButton: {
-        		type: Boolean,
-        		default: false
-        	},
 			disabled: {
 				type: Boolean,
 				default: false
-			}
-		},
-		computed: {
-			showClearButton: function() {
-				return this.clearButton && this.value && !this.disabled;
-			}
-		},
-		directives: {
-			/* the directive is necessary to update the timepicker library
-			* when the model is changed from the parent */
-			updateTimePicker: {
-				update: function (el) {
-	  				let event = new Event('change');
-					el.dispatchEvent(event);
-  				}
-			}
-		},
-		methods: {
-			clearTime: function() {
-				$("#input-" + this._uid).timepicker('setTime', '');
-				this.$emit('input', '');
 			},
-			emitInputEvent: function (event) {
-				this.$emit('input', event.target.value);
-		    },
-		    hideWidget: function() {
-		    	$("#input-" + this._uid).timepicker('hideWidget');
-		    }
+			inputClass: {
+                type: String,
+                default: 'form-control'
+            },
 		},
-		mounted: function() {
-			$('#input-' + this._uid).timepicker({
-				// template: false,
-                // showInputs: false,
-                defaultTime: false,
-                maxHours: 24,
-                showMeridian: false,
-			}).on('changeTime.timepicker', function() {
-				//dispatch an input event that bubbles up so
-				//vue updates the bound model
-				let event = new Event('input');
-		        $(this)[0].dispatchEvent(event);
-			});
+
+		directives: {
+			timepicker: {
+				inserted(element, binding, vnode) {
+					vnode.context.element.timepicker({
+						// template: false,
+		                // showInputs: false,
+		                defaultTime: false,
+		                maxHours: 24,
+		                showMeridian: false,
+					}).on('changeTime.timepicker', function(event) {
+						vnode.context.$emit('input', event.time.value);
+					});
+				}
+			}
+		},
+
+		computed: {
+			element() {
+				return $("#input-" + this._uid);
+			},
+			clearButton() {
+				return this.value && !this.disabled;
+			}
+		},
+
+		methods: {
+			clear() {
+				this.element.timepicker('setTime', '');
+				this.$emit('input', '');
+			}
 		}
 	}
 
@@ -89,20 +78,16 @@
 
 <style>
 
-    .time-picker > i.clear-button {
-      position: absolute;
-      cursor: pointer;
-      top: calc(50% - 12px);
-      left: 2px;
-      outline: none;
-      z-index: 3;
-      display: block;
+    .timepicker > i.clear-button {
+      	z-index: 10;
+		position: absolute;
+		right: 30px;
+		top: 4px;
+		cursor: pointer;
     }
-    .time-picker > i.clear-button:focus {
-      opacity: .1;
-    }
-    .time-picker > input {
-    	text-align: right;
+
+    .timepicker > input {
+    	text-align: left;
     }
 
 </style>

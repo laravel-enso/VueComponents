@@ -1,6 +1,7 @@
 <template>
     <div class="row">
-        <div :class="columnsClass" v-for="column in grid">
+        <div :class="columnsClass"
+            v-for="column in grid">
             <div v-for="(element, index) in column">
                 <chart v-if="element.type === 'chart'"
                     :solid="true"
