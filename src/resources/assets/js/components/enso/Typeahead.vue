@@ -1,27 +1,32 @@
 <template>
 
-	<div
-		:class="{'open':showDropdown, 'typeahead-wrapper': true}">
-		<div class="input-group" :class="{'has-error' : inputHasError}">
-			<i class="fa fa-times clear-button" @click="clearInput" v-if="clearButton" v-show="showClearButton"></i>
+	<div class="typeahead-wrapper"
+		:class="{ 'open': showDropdown }">
+		<div class="input-group" :class="{ 'has-error': hasError }">
+			<i class="fa fa-times clear-button btn-box-tool"
+				@click="clear()"
+				v-if="showClearButton">
+			</i>
 			<input type="text" class="form-control typeahead"
 				:disabled="disabled"
 				:placeholder="placeholder"
-				v-model="currentValue"
-				@input="update"
+				:value="value"
+				@input="update($event.target.value);getData();"
 				@keydown.up="keyUp"
 				@keydown.down="keyDown"
-				@keydown.enter= "hit"
-				@keydown.esc="reset"
-				@blur="showDropdown = false">
+				@keydown.enter="hit"
+				@keydown.esc="update('')"
+				@blur="dropdown=false">
 			<span class="input-group-addon">
 				<i class="fa fa-search"></i>
 			</span>
 		</div>
 		<ul class="dropdown-menu">
-			<li v-for="(item, index) in items" v-bind:class="{'active': isActive(index)}">
-				<a @mousedown.prevent="hit" @mousemove="setActive(index)">
-						<span v-html="highlight(item[displayProperty], currentValue)"></span>
+			<li v-for="(item, index) in items"
+				:class="{'active': isActive(index)}">
+				<a @mousedown.prevent="hit"
+					@mousemove="setActive(index)"
+					v-html="$options.filters.highlight(item[displayProperty], value)">
 				</a>
 			</li>
 		</ul>
@@ -45,8 +50,8 @@
 				type: String,
 				required: true
 			},
-			customParams: {
-				type:Object,
+			params: {
+				type: Object,
 				default: null
 			},
 			displayProperty: {
@@ -55,99 +60,113 @@
 			},
 			placeholder: {
 				type: String,
-				default: 'type something'
-			},
-			clearButton: {
-				type: Boolean,
-				default: false,
+				default: 'Searching for something?'
 			},
 			regExp: {
 				type: RegExp,
-				default: function() {
+				default() {
 					return /^[A-Za-z0-9 _-]*[A-Za-z0-9][A-Za-z0-9 _-]*$/;
+				}
+			},
+			value: {
+				type: String,
+				default: ""
+			}
+		},
+
+		computed: {
+			hasError() {
+				return this.value && !this.regExp.test(this.value);
+			},
+			showClearButton() {
+				return this.value && !this.disabled;
+			},
+			showDropdown() {
+				return !this.hideDropdown && this.value && !this.hasError && this.items.length > 0;
+			}
+		},
+
+		watch: {
+			value() {
+				if (this.value === "") {
+					this.items = [];
 				}
 			}
 		},
-		computed: {
-			inputHasError: function() {
-				return this.currentValue && !this.regExp.test(this.currentValue);
-			},
-			showClearButton: function() {
-				return this.clearButton && this.currentValue && !this.disabled;
-			}
-		},
-		data: function() {
+
+		data() {
 			return {
-				currentIndex: 0,
-				showDropdown: false,
+				index: 0,
 				items: [],
-				style: {
-						width: this.width
-				},
-				currentValue: null
+				hideDropdown: false
 			};
 		},
-		methods: {
-			highlight: function(item, currentValue) {
-				currentValue.split(' ').filter(function(word) {
+
+        filters: {
+        	highlight(item, value) {
+        		value.split(' ').filter(word => {
 					return word.length;
-				}).forEach(function(word) {
+				}).forEach(word => {
 					item = item.replace(new RegExp('(' + word + ')', 'gi'), '<b>$1</b>')
 				});
 
 				return item;
-			},
-			update: _.debounce(function() {
-				if (!this.currentValue) {
-						this.reset();
-						return false;
-				}
+        	}
+        },
 
-				if (this.inputHasError) {
-					this.showDropdown = false;
+		created() {
+            this.getData = _.debounce(this.getData, 200);
+        },
+
+		methods: {
+			getData() {
+				if (!this.value || this.hasError) {
 					return false;
 				}
 
-				let params = {
-					currentValue: this.currentValue,
-					limit: this.limit,
-					customParams: this.customParams
-				};
-
-				axios.get(this.url, { params: params }).then((response) => {
+				axios.get(this.url, {params: this.getParams()}).then(response => {
+					this.hideDropdown = false;
 					this.items = response.data;
-					this.showDropdown = this.items.length > 0;
+				}).catch(error => {
+					this.reportEnsoException(error);
 				});
-			}, 100),
-			reset: function() {
-				this.items = [];
-				this.showDropdown = false;
 			},
-			setActive: function(index) {
-				this.currentIndex = index;
+			getParams() {
+				return {
+					value: this.value,
+					limit: this.limit,
+					params: this.params
+				};
 			},
-			isActive: function(index) {
-				return this.currentIndex === index;
+			update(value) {
+				this.$emit('input', value);
 			},
-			hit: function() {
+			setActive(index) {
+				this.index = index;
+			},
+			isActive(index) {
+				return this.index === index;
+			},
+			hit() {
 				if (this.showDropdown) {
-					let item = this.items[this.currentIndex];
-					this.currentValue = item[this.displayProperty];
-					this.showDropdown = false;
-					this.$emit('input', item);
-					this.clearInput();
+					this.update(this.items[this.index][this.displayProperty]);
+					this.$emit('update', this.items[this.index]);
+					this.hideDropdown = true;
 				}
 			},
-			keyUp: function() {
-				if (this.currentIndex > 0) this.currentIndex--;
+			keyUp() {
+				if (this.index > 0) {
+					this.index--;
+				}
 			},
-			keyDown: function() {
-				if (this.currentIndex < this.items.length - 1) this.currentIndex++;
+			keyDown() {
+				if (this.index < this.items.length - 1) {
+					this.index++
+				};
 			},
-			clearInput: function() {
-				this.currentValue = '';
-				this.items = [];
-				this.$emit('input', {});
+			clear() {
+				this.update("");
+				this.$emit('update', {});
 			}
 		}
 	}
@@ -161,26 +180,14 @@
 		width: 100%;
 	}
 
-	.typeahead-wrapper .input-group .input-group-addon {
-		background-color: inherit;
-	}
-
-	.input-group  i.clear-button {
+	.typeahead-wrapper .input-group  i.clear-button {
 		position: absolute;
 		cursor: pointer;
-		top: calc((100% - 12px)/2);
-		left: 2px;
+		top: 4px;
+		right: 35px;
 		outline: none;
 		z-index: 4;
 		display: block;
-	}
-
-	.input-group  i.clear-button:focus {
-		opacity: .1;
-	}
-
-	input.form-control.typeahead {
-		padding-left: 25px;
 	}
 
 </style>

@@ -1,36 +1,35 @@
 <template>
 
-  	<div class="box box-primary">
+  	<div class="box" :class="boxClass">
 	    <table class="text-center">
 	        <tbody>
 	            <tr>
-	                <td colspan="3">
-	                    <slot name="vue-filter-name">
-	                    </slot>
+	                <td :colspan="options.length + 1">
+	                    {{ title }}:
 	                </td>
 	            </tr>
 	            <tr>
-	                <td>
-	                    <input :name="'radio-' + _uid" @change="changed" type="radio" v-model="value" value="1">
-	                        <label :for="'yes-' + _uid">
-	                            <slot name="vue-filter-yes">
-	                            </slot>
+	                <td v-for="option in options">
+	                    <input :name="'radio-' + _uid"
+	                    	@change="changed"
+	                    	type="radio"
+	                    	v-model="value" :value="option.value">
+	                        <label class="vue-filter"
+	                        	:for="'yes-' + _uid">
+	                            {{ option.label }}
 	                        </label>
 	                    </input>
 	                </td>
 	                <td>
-	                    <input :name="'radio-' + _uid" @change="changed" type="radio" v-model="value" value="0">
-	                        <label :for="'no-' + _uid">
-	                            <slot name="vue-filter-no">
-	                            </slot>
-	                        </label>
-	                    </input>
-	                </td>
-	                <td>
-	                    <input :name="'radio-' + _uid" @change="changed" type="radio" v-model="value" value="">
-	                        <label :for="'n-a-' + _uid">
-	                            <slot name="vue-filter-n-a">
-	                            </slot>
+	                    <input :name="'radio-' + _uid"
+	                    	@change="changed"
+	                    	type="radio"
+	                    	v-model="value" :value="null">
+	                        <label class="vue-filter"
+	                        	:for="'n-a-' + _uid">
+	                            <i class="fa fa-power-off text-red"
+	                            	:class="{ 'text-red': value === null, 'text-green': value !== null }">
+                            	</i>
 	                        </label>
 	                    </input>
 	                </td>
@@ -44,17 +43,49 @@
 <script>
 
   	export default {
-		data: function() {
+  		props: {
+  			title: {
+  				type: String,
+  				default: null
+  			},
+  			theme: {
+  				type: String,
+  				default: 'primary'
+  			},
+  			options: {
+  				type: Array,
+  				default() {
+  					return {};
+  				}
+  			}
+  		},
+
+  		computed: {
+  			boxClass() {
+  				return 'box-' + this.theme;
+  			}
+  		},
+
+		data() {
 			return {
-				value: ''
+				value: null
 			};
 		},
 
 		methods: {
-			changed: function() {
+			changed() {
 				this.$emit('input', this.value);
 			}
 		}
   	}
 
 </script>
+
+<style>
+
+	label.vue-filter {
+		margin-bottom: 0;
+		margin-top: 3px;
+	}
+
+</style>
