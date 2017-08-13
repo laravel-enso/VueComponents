@@ -12,6 +12,7 @@
                     :collapsed="element.data.collapsed">
                 </chart>
                 <data-table v-if="element.type === 'table'"
+                    :solid="true"
                     :source="element.data.source"
                     :ref="element.type + '-' + index"
                     :id="element.type + '-' + index">

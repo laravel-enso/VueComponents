@@ -50,7 +50,7 @@
 			datepicker: {
 				inserted(element, binding, vnode) {
 					vnode.context.element.datepicker({
-				        format: self.format,
+				        format: vnode.context.format,
 				        language: Store.user.preferences.lang,
 				        todayHighlight: true,
 				        autoclose: true
@@ -89,10 +89,10 @@
 <style>
 
     .datepicker > i.clear-button {
-    	z-index: 10;
-    	float:right;
+      	z-index: 10;
         position: absolute;
-        right: 35px;
+        right: 30px;
+        top: 7px;
         cursor: pointer;
     }
 
