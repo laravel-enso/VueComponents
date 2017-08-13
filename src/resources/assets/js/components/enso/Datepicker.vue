@@ -1,20 +1,22 @@
 <template>
 
-	<div class="input-group datepicker">
-		<i class="fa fa-times clear-button btn-box-tool"
-			@click="clear"
-			v-if="showClearButton">
-		</i>
+	<div class="input-group flatpickr">
 		<input type="text"
-			v-datepicker
+			:placeholder="placeholder"
 			:id="'date-input-' + _uid"
-			:class="inputClass"
+			data-input
 			:name="name"
-			:value="value"
+			:class="inputClass"
 			:disabled="disabled">
 		<span class="input-group-addon">
-			<i class="fa fa-calendar">
-			</i>
+			<a class="input-button"
+				@click="picker.open()">
+				<i class="fa fa-calendar"></i>
+			</a>
+			<a class="input-button"
+				@click="picker.clear()">
+				<i class="fa fa-times"></i>
+			</a>
 		</span>
 	</div>
 
@@ -30,7 +32,23 @@
             },
 			value: {
 				type: String,
-				default: ''
+				required: true,
+				validate (value) {
+		          	return value === null || typeof value === 'string'
+		          		|| value instanceof Date || value instanceof Array;
+		        }
+			},
+			time: {
+				type: Boolean,
+				default: false
+			},
+			timeOnly: {
+				type: Boolean,
+				default: false
+			},
+			placeholder: {
+				type: String,
+				default: Store.labels.selectDate
 			},
 			disabled: {
 				type: Boolean,
@@ -38,7 +56,7 @@
 			},
 			format: {
 				type: String,
-				default: 'dd-mm-yyyy'
+				default: 'd-m-Y'
 			},
 			inputClass: {
                 type: String,
@@ -46,34 +64,40 @@
             },
 		},
 
-		directives: {
-			datepicker: {
-				inserted(element, binding, vnode) {
-					vnode.context.element.datepicker({
-				        format: vnode.context.format,
-				        language: Store.user.preferences.lang,
-				        todayHighlight: true,
-				        autoclose: true
-				    }).on('hide', function(date) {
-				    	vnode.context.$emit('input', date.format(vnode.context.format));
-				    });
-				},
-				update(element, binding, vnode) {
-			    	vnode.context.element.datepicker('update');
-                },
-                unbind(element, binding, vnode) {
-                	vnode.context.element.datepicker('destroy');
-                }
-			}
+		data() {
+			return {
+				picker: null,
+			};
 		},
 
 		computed: {
-			element() {
-				return $("#date-input-" + this._uid);
-			},
-			showClearButton() {
-				return this.value && !this.disabled;
+			config(self = this) {
+				return {
+					weekNumbers: false,
+					defaultDate: this.value,
+					dateFormat: this.format,
+					allowInput: false,
+					noCalendar: this.timeOnly,
+					enableTime: this.time || this.timeOnly,
+					onChange(selectedDates, dateStr) {
+						self.$emit('input', dateStr);
+					}
+				}
 			}
+		},
+
+		watch: {
+			value: {
+				handler(newValue) {
+					this.picker.setDate(newValue);
+				},
+
+				deep: true
+			}
+		},
+
+		mounted() {
+			this.picker = new Flatpickr("#date-input-" + this._uid, this.config);
 		},
 
 		methods: {
@@ -81,6 +105,10 @@
 				this.element.datepicker('clearDates');
 				this.$emit('input', "");
 			}
+		},
+
+		beforDestroy() {
+			this.picker.destroy();
 		}
 	}
 
@@ -88,21 +116,8 @@
 
 <style>
 
-    .datepicker > i.clear-button {
-      	z-index: 10;
-        position: absolute;
-        right: 30px;
-        top: 7px;
-        cursor: pointer;
+    a.input-button {
+    	cursor: pointer;
     }
-
-    .datepicker > input {
-    	text-align: left;
-    }
-
-    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
-	.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top {
-		z-index: 9999 !important;
-	}
 
 </style>
