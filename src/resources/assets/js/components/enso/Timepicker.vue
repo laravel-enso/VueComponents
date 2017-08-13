@@ -79,10 +79,10 @@
 <style>
 
     .timepicker > i.clear-button {
+    	float:right;
       	z-index: 10;
 		position: absolute;
 		right: 30px;
-		top: 4px;
 		cursor: pointer;
     }
 

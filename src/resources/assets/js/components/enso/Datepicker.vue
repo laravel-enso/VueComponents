@@ -89,10 +89,10 @@
 <style>
 
     .datepicker > i.clear-button {
-      	z-index: 10;
+    	z-index: 10;
+    	float:right;
         position: absolute;
-        right: 30px;
-        top: 7px;
+        right: 35px;
         cursor: pointer;
     }
 
