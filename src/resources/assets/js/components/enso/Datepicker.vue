@@ -10,12 +10,13 @@
 			:disabled="disabled">
 		<span class="input-group-addon">
 			<a class="input-button"
-				@click="picker.open()">
-				<i class="fa fa-calendar"></i>
+				@click="picker.clear()"
+				v-if="value">
+				<i class="fa fa-times"></i>
 			</a>
 			<a class="input-button"
-				@click="picker.clear()">
-				<i class="fa fa-times"></i>
+				@click="picker.open()">
+				<i class="fa fa-calendar"></i>
 			</a>
 		</span>
 	</div>
@@ -31,8 +32,8 @@
                 default: null
             },
 			value: {
-				type: String,
 				required: true,
+				default: null,
 				validate (value) {
 		          	return value === null || typeof value === 'string'
 		          		|| value instanceof Date || value instanceof Array;

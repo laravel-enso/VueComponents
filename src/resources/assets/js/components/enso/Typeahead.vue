@@ -3,12 +3,9 @@
 	<div class="typeahead-wrapper"
 		:class="{ 'open': showDropdown }">
 		<div class="input-group" :class="{ 'has-error': hasError }">
-			<i class="fa fa-times clear-button btn-box-tool"
-				@click="clear()"
-				v-if="showClearButton">
-			</i>
-			<input type="text" class="form-control typeahead"
+			<input type="text" class="form-control"
 				:disabled="disabled"
+				:id="'typeahead-' + _uid"
 				:placeholder="placeholder"
 				:value="value"
 				@input="update($event.target.value);getData();"
@@ -18,7 +15,15 @@
 				@keydown.esc="update('')"
 				@blur="dropdown=false">
 			<span class="input-group-addon">
-				<i class="fa fa-search"></i>
+				<a class="input-button"
+					@click="clear()"
+					v-if="showClearButton">
+					<i class="fa fa-times"></i>
+				</a>
+				<a class="input-button"
+					@click="element.focus()">
+					<i class="fa fa-search"></i>
+				</a>
 			</span>
 		</div>
 		<ul class="dropdown-menu">
@@ -83,6 +88,9 @@
 			},
 			showDropdown() {
 				return !this.hideDropdown && this.value && !this.hasError && this.items.length > 0;
+			},
+			element() {
+				return document.getElementById('typeahead-' + this._uid);
 			}
 		},
 
@@ -180,14 +188,8 @@
 		width: 100%;
 	}
 
-	.typeahead-wrapper .input-group  i.clear-button {
-		position: absolute;
-		cursor: pointer;
-		top: 4px;
-		right: 35px;
-		outline: none;
-		z-index: 4;
-		display: block;
-	}
+    a.input-button {
+    	cursor: pointer;
+    }
 
 </style>
