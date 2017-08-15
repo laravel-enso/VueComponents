@@ -5,7 +5,7 @@
 	        <tbody>
 	            <tr>
 	                <td :colspan="options.length + 1">
-	                    {{ title }}:
+	                    {{ title }}
 	                </td>
 	            </tr>
 	            <tr>
