@@ -5,7 +5,6 @@
 			:placeholder="placeholder"
 			:id="'date-input-' + _uid"
 			data-input
-			:name="name"
 			:class="inputClass"
 			:disabled="disabled">
 		<span class="input-group-addon">
@@ -16,7 +15,12 @@
 			</a>
 			<a class="input-button"
 				@click="picker.open()">
-				<i class="fa fa-calendar"></i>
+				<i class="fa fa-clock-o"
+					v-if="timeOnly">
+				</i>
+				<i class="fa fa-calendar"
+					v-else>
+				</i>
 			</a>
 		</span>
 	</div>
@@ -25,12 +29,16 @@
 
 <script>
 
+	import Flatpickr from 'flatpickr';
+
+	let FlatpickrL10ns = {
+		ro: require("flatpickr/dist/l10n/ro.js").ro
+	};
+
+	Flatpickr.localize(FlatpickrL10ns[Store.user.preferences.global.lang]);
+
 	export default {
 		props: {
-			name: {
-                type: String,
-                default: null
-            },
 			value: {
 				required: true,
 				default: null,
@@ -78,6 +86,7 @@
 					defaultDate: this.value,
 					dateFormat: this.format,
 					allowInput: false,
+					clickOpens: false,
 					noCalendar: this.timeOnly,
 					enableTime: this.time || this.timeOnly,
 					onChange(selectedDates, dateStr) {
@@ -101,19 +110,14 @@
 			this.picker = new Flatpickr("#date-input-" + this._uid, this.config);
 		},
 
-		methods: {
-			clear() {
-				this.element.datepicker('clearDates');
-				this.$emit('input', "");
-			}
-		},
-
-		beforDestroy() {
+		beforeDestroy() {
 			this.picker.destroy();
 		}
 	}
 
 </script>
+
+<style src="flatpickr/dist/themes/material_green.css"></style>
 
 <style>
 
