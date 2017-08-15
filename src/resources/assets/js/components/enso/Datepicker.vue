@@ -86,7 +86,7 @@
 					defaultDate: this.value,
 					dateFormat: this.format,
 					allowInput: false,
-					clickOpens: false,
+					clickOpens: true,
 					noCalendar: this.timeOnly,
 					enableTime: this.time || this.timeOnly,
 					onChange(selectedDates, dateStr) {
