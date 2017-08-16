@@ -4,7 +4,8 @@
 		<input type="text"
 			:placeholder="placeholder"
 			:id="'date-input-' + _uid"
-			data-input
+			:name="name"
+			:value="value"
 			:class="inputClass"
 			:disabled="disabled">
 		<span class="input-group-addon">
@@ -46,6 +47,10 @@
 		          	return value === null || typeof value === 'string'
 		          		|| value instanceof Date || value instanceof Array;
 		        }
+			},
+			name: {
+				type: String,
+				default: null
 			},
 			time: {
 				type: Boolean,
