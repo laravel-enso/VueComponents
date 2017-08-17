@@ -11,7 +11,7 @@
 		<span class="input-group-addon">
 			<a class="input-button"
 				@click="picker.clear()"
-				v-if="value">
+				v-if="value && !disabled">
 				<i class="fa fa-times"></i>
 			</a>
 			<a class="input-button"
