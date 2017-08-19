@@ -10,7 +10,7 @@
 			:disabled="disabled">
 		<span class="input-group-addon">
 			<a class="input-button"
-				@click="picker.clear()"
+				@click="picker.clear();$emit('clear')"
 				v-if="value && !disabled">
 				<i class="fa fa-times"></i>
 			</a>

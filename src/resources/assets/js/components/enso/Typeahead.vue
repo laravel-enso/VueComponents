@@ -16,7 +16,7 @@
 				@blur="dropdown=false">
 			<span class="input-group-addon">
 				<a class="input-button"
-					@click="clear()"
+					@click="clear();$emit('clear')"
 					v-if="showClearButton">
 					<i class="fa fa-times"></i>
 				</a>
