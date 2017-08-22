@@ -1,7 +1,8 @@
 <template>
 
 	<div>
-		<div class="wrapper btn-group paginate pull-right">
+		<div class="btn-group paginate pull-right"
+			:class="{'with-border': border}">
 			<div class="btn-group paginate"
 				:class="{'open': open}">
 				<button class="btn btn-default btn-flat paginate"
@@ -54,6 +55,10 @@
 				default() {
 					return [10, 15, 20, 25, 30];
 				}
+			},
+			border: {
+				type: Boolean,
+				default: false
 			}
 		},
 
@@ -104,7 +109,7 @@
 
 <style>
 
-	.wrapper.btn-group.paginate {
+	.btn-group.paginate.with-border {
 		border: 1px solid #B1B3B3;
 	}
 
