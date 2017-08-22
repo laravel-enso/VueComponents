@@ -1,7 +1,7 @@
 <template>
 
 	<div>
-		<div class="btn-group">
+		<div class="wrapper btn-group paginate pull-right">
 			<div class="btn-group paginate"
 				:class="{'open': open}">
 				<button class="btn btn-default btn-flat paginate"
@@ -30,6 +30,7 @@
 				@click="next">>
 			</button>
 		</div>
+		<div class="clearfix"></div>
 		<slot :list="computedList">
 		</slot>
 	</div>
@@ -51,7 +52,7 @@
 			lengths: {
 				type: Array,
 				default() {
-					return [2, 10, 15, 20, 25, 30];
+					return [10, 15, 20, 25, 30];
 				}
 			}
 		},
@@ -102,6 +103,10 @@
 </script>
 
 <style>
+
+	.wrapper.btn-group.paginate {
+		border: 1px solid #B1B3B3;
+	}
 
 	ul.dropdown-menu.paginate {
 		min-width: 66px
