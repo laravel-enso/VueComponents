@@ -44,6 +44,10 @@
 				type: Array,
 				required: true
 			},
+			length: {
+				type: Number,
+				default: 10
+			},
 			lengths: {
 				type: Array,
 				default() {
@@ -74,7 +78,7 @@
 
 		data() {
 			return {
-				pageLength: 2,
+				pageLength: this.length,
 				open: false,
 				current: 1
 			}
