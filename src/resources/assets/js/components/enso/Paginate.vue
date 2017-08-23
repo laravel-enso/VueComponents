@@ -19,15 +19,21 @@
 				<ul class="dropdown-menu paginate">
 		            <li v-for="length in lengths"
 		            	v-if="length !== pageLength && length">
-		            	<a href="#" @click="pageLength=length;open=false">{{ length }}</a>
+		            	<a href="#" @click="changeLength(length)">{{ length }}</a>
 		            </li>
 				</ul>
 			</div>
-			<button class="btn btn-default btn-flat"
+			<button class="btn btn-default btn-flat">
+				<i class="fa fa-eye margin-right-xs"></i>
+				{{ start }} -> {{ offset }} / {{ records }}
+			</button>
+			<button class="btn btn-default btn-flat previous"
 				@click="previous"><
 			</button>
-			<button class="btn btn-default btn-flat">{{ current }} / {{ pages }}</button>
-			<button class="btn btn-default btn-flat"
+			<button class="btn btn-default btn-flat current-page">
+				<i class="fa fa-file-text-o margin-right-xs"></i>{{ current }} / {{ pages }}
+			</button>
+			<button class="btn btn-default btn-flat next"
 				@click="next">>
 			</button>
 		</div>
@@ -63,14 +69,23 @@
 		},
 
 		computed: {
-			pages() {
-				return Math.ceil(this.list.length / this.pageLength);
-			},
 			computedList() {
 				return this.list.filter((el, index) => {
-					return (index >= (this.current - 1) * this.pageLength)
-						&& (index < (this.current) * this.pageLength);
+					return index >= this.start - 1
+						&& index < this.current * this.pageLength;
 				});
+			},
+			pages() {
+				return Math.ceil(this.records / this.pageLength);
+			},
+			records() {
+				return this.list.length;
+			},
+			start() {
+				return (this.current - 1) * this.pageLength + 1;
+			},
+			offset() {
+				return this.start + this.computedList.length - 1;
 			}
 		},
 
@@ -99,6 +114,11 @@
 				if (this.current > 1) {
 					this.current--;
 				}
+			},
+			changeLength(newLength) {
+				this.current = Math.ceil(this.start / newLength);
+				this.pageLength = newLength;
+				this.open=false
 			}
 		},
 
@@ -114,11 +134,20 @@
 	}
 
 	ul.dropdown-menu.paginate {
-		min-width: 66px
+		min-width: 70px;
 	}
 
-	div.paginate > button {
-		width: 68px;
+	ul.dropdown-menu.paginate > li {
+		text-align: center;
+	}
+
+	div.paginate > button.paginate {
+		width: 70px;
+	}
+
+	div.paginate > button.previous,
+	div.paginate > button.next {
+		width: 40px;
 	}
 
 </style>
