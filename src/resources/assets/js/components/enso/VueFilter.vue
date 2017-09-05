@@ -15,8 +15,7 @@
 	                    	type="radio"
 	                    	v-model="value" :value="option.value">
 	                        <label class="vue-filter"
-	                        	:for="'yes-' + _uid">
-	                            {{ option.label }}
+	                        	v-html="option.label">
 	                        </label>
 	                    </input>
 	                </td>
@@ -25,8 +24,7 @@
 	                    	@change="changed"
 	                    	type="radio"
 	                    	v-model="value" :value="null">
-	                        <label class="vue-filter"
-	                        	:for="'n-a-' + _uid">
+	                        <label class="vue-filter">
 	                            <i class="fa fa-power-off text-red"
 	                            	:class="{ 'text-red': value === null, 'text-green': value !== null }">
                             	</i>
