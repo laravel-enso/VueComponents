@@ -11,9 +11,9 @@
 	            <tr>
 	                <td v-for="option in options">
 	                    <input :name="'radio-' + _uid"
-	                    	@change="changed"
+	                    	@change="update"
 	                    	type="radio"
-	                    	v-model="value" :value="option.value">
+	                    	v-model="internalValue" :value="option.value">
 	                        <label class="vue-filter"
 	                        	v-html="option.label">
 	                        </label>
@@ -21,12 +21,12 @@
 	                </td>
 	                <td>
 	                    <input :name="'radio-' + _uid"
-	                    	@change="changed"
+	                    	@change="update"
 	                    	type="radio"
-	                    	v-model="value" :value="null">
+	                    	v-model="internalValue" :value="null">
 	                        <label class="vue-filter">
 	                            <i class="fa fa-power-off text-red"
-	                            	:class="{ 'text-red': value === null, 'text-green': value !== null }">
+	                            	:class="{ 'text-red': internalValue === null, 'text-green': internalValue !== null }">
                             	</i>
 	                        </label>
 	                    </input>
@@ -55,6 +55,15 @@
   				default() {
   					return {};
   				}
+  			},
+  			value: {
+  				required: true
+  			}
+  		},
+
+  		data() {
+  			return {
+  				internalValue: this.value
   			}
   		},
 
@@ -64,15 +73,9 @@
   			}
   		},
 
-		data() {
-			return {
-				value: null
-			};
-		},
-
 		methods: {
-			changed() {
-				this.$emit('input', this.value);
+			update() {
+				this.$emit('input', this.internalValue);
 			}
 		}
   	}
