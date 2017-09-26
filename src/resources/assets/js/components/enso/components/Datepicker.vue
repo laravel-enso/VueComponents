@@ -1,29 +1,19 @@
 <template>
 
-	<div class="input-group flatpickr">
-		<input type="text"
-			:placeholder="placeholder"
-			:id="'date-input-' + _uid"
-			:name="name"
-			:value="value"
-			:class="inputClass"
-			:disabled="disabled">
-		<span class="input-group-addon">
-			<a class="input-button"
-				@click="picker.clear();$emit('clear')"
-				v-if="value && !disabled">
-				<i class="fa fa-times"></i>
-			</a>
-			<a class="input-button"
-				@click="picker.open()">
-				<i class="fa fa-clock-o"
-					v-if="timeOnly">
-				</i>
-				<i class="fa fa-calendar"
-					v-else>
-				</i>
-			</a>
-		</span>
+	<div class="flatpickr">
+		<div class="control has-icons-right">
+			<input type="text"
+				:placeholder="placeholder"
+				:id="'date-input-' + _uid"
+				:name="name"
+				:value="value"
+				class="input control"
+				:disabled="disabled">
+			<span class="icon is-small is-right">
+				<i class="fa fa-clock-o" v-if="timeOnly"></i>
+    		    <i class="fa fa-calendar" v-else></i>
+		    </span>
+	    </div>
 	</div>
 
 </template>
@@ -36,7 +26,7 @@
 		ro: require("flatpickr/dist/l10n/ro.js").ro
 	};
 
-	Flatpickr.localize(FlatpickrL10ns[Store.user.preferences.global.lang]);
+	// Flatpickr.localize(FlatpickrL10ns[Store.user.preferences.global.lang]); //fixme
 
 	export default {
 		props: {
@@ -62,7 +52,7 @@
 			},
 			placeholder: {
 				type: String,
-				default: Store.labels.selectDate
+				default: 'Select Date' //fixme
 			},
 			disabled: {
 				type: Boolean,
@@ -102,13 +92,9 @@
 		},
 
 		watch: {
-			value: {
-				handler(newValue) {
-					this.picker.setDate(newValue);
-				},
-
-				deep: true
-			}
+			value(newValue) {
+				this.picker.setDate(newValue);
+			},
 		},
 
 		mounted() {
