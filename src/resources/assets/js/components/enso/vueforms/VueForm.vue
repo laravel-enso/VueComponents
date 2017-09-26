@@ -139,7 +139,7 @@
                 }).catch(error => {
                     this.handleError(error);
                 }).catch(error=> {
-                    this.errors.set(error.response.data);
+                    this.errors.set(error.response.data.errors);
                     this.loading = false;
                 });
             },

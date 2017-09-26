@@ -11,7 +11,7 @@
 VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Features
-- `Dashboard`, a highly integrated components used for easily rendering a dashboard containing charts or datatables
+- `Dashboard`, a highly integrated component used for easily rendering a dashboard containing charts or datatables
 - `Datepicker`, a beautiful date/time picker based on [flatpickr](https://chmln.github.io/flatpickr/)
 - `Modal`, an ultra light modal component
 - `Paginate`, a simple to use and powerful pagination module

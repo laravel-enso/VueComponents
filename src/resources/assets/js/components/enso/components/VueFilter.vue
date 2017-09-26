@@ -41,6 +41,8 @@
 <script>
 
   	export default {
+  		name: 'VueFilter',
+
   		props: {
   			title: {
   				type: String,
