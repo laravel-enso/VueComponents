@@ -170,7 +170,7 @@
                     responsive: true,
                     serverSide: true,
                     ajax: {
-                        url: '/' + route(this.source + '.getTableData', null, false),
+                        url: route(this.source + '.getTableData', null, false),
                         type: 'GET',
                         data: {
                             totals() { return JSON.stringify(self.totals); },
@@ -214,7 +214,7 @@
                 },
                 editorOptions: {
                     ajax: {
-                        url: '/' + this.source + '/setTableData', //fixme
+                        url: this.source + '/setTableData', //fixme
                         headers: { 'X-CSRF-TOKEN': self.$store.state.csrfToken },
                     },
                     table: this.id || '#table-' + this._uid,
@@ -258,7 +258,7 @@
 
         methods: {
             initTable() {
-                axios.get('/' + route(this.source + '.initTable', null, false)).then(response => {
+                axios.get(route(this.source + '.initTable', null, false)).then(response => {
                     this.processInitData(response.data);
                 }).catch(error => {
                     this.handleError(error);
@@ -386,11 +386,11 @@
                 let self = this;
 
                 $('table a.show-record').off('click').on('click', function(event) {
-                    self.$bus.$emit('redirect', '/' + route(self.source + '.show', $(this).data('id'), false));
+                    self.$bus.$emit('redirect', route(self.source + '.show', $(this).data('id'), false));
                 });
 
                 $('table a.edit-record').off('click').on('click', function(event) {
-                    self.$bus.$emit('redirect', '/' + route(self.source + '.edit', $(this).data('id'), false));
+                    self.$bus.$emit('redirect', route(self.source + '.edit', $(this).data('id'), false));
                 });
 
                 $('table a.delete-record').off('click').on('click', function(event) {
@@ -502,7 +502,7 @@
                 return ''
                 + (this.actionButtons.standard.includes('show') ? '<a class="button show-record is-small is-table-button is-success" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-eye"></i></span></a>' : '')
                 + (this.actionButtons.standard.includes('edit') ? '<a class="button edit-record is-small is-table-button is-warning has-margin-left-small" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-pencil"></i></span></a>' : '')
-                + (this.actionButtons.standard.includes('download') ? '<a class="button is-table-button is-small is-primary has-margin-left-small" href="/' + route(this.source + '.download', data, false) +'"><span class="icon is-small" data-id="' + data + '"><i class="fa fa-cloud-download"></i></span></a>' : '')
+                + (this.actionButtons.standard.includes('download') ? '<a class="button is-table-button is-small is-primary has-margin-left-small" href="' + route(this.source + '.download', data, false) +'"><span class="icon is-small" data-id="' + data + '"><i class="fa fa-cloud-download"></i></span></a>' : '')
                 + (this.actionButtons.standard.includes('destroy') ? '<a class="button delete-record is-table-button is-small is-danger has-margin-left-small" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-trash-o"><i class=""></i></span></a>' : '');
             },
             getData() {
@@ -514,12 +514,12 @@
                 this.dtHandle.page(pageNumber).draw('page');
             },
             createRecord() {
-                this.$bus.$emit('redirect', '/' + route(this.source + '.create', null, false));
+                this.$bus.$emit('redirect', route(this.source + '.create', null, false));
             },
             deleteRecord() {
                 this.showModal = false;
 
-                axios.delete('/' + route(this.source + '.destroy', this.selectedRecord, false)).then(response => {
+                axios.delete(route(this.source + '.destroy', this.selectedRecord, false)).then(response => {
                     this.dtHandle.ajax.reload();
                     toastr.success(response.data.message);
                 }).catch(error => {
@@ -549,7 +549,7 @@
                 this.mountDataTable();
             },
             exportExcel() {
-                axios.get('/' + route(this.source + '.exportExcel', null, false), {params: this.getExportParams()}).then(response => {
+                axios.get(route(this.source + '.exportExcel', null, false), {params: this.getExportParams()}).then(response => {
                     toastr.success(response.data.message);
                 }).catch(error => {
                     this.handleError(error);

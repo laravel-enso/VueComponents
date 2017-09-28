@@ -11,7 +11,7 @@ table.dataTable {
 .tag.is-table-tag {
 	font-size: 0.85rem;
 	height: 1.4em;
-    width: 2.2em;
+	padding: 6px;
 }
 
 .table.is-narrow th {

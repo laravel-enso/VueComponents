@@ -76,7 +76,7 @@
 
 		methods: {
 			getCount() {
-				axios.get('/' + route('core.notifications.getCount', [], false)).then(response => {
+				axios.get(route('core.notifications.getCount', [], false)).then(response => {
 					this.unreadCount = response.data;
 				}).catch(error => {
 					this.handleError(error);
@@ -89,7 +89,7 @@
 
 				this.loading = true;
 
-				axios.get('/' + route('core.notifications.getList', [this.offset, this.limit], false)).then(response => {
+				axios.get(route('core.notifications.getList', [this.offset, this.limit], false)).then(response => {
 					this.notifications = this.offset ? this.notifications.concat(response.data) : response.data;
 					this.offset = this.notifications.length;
 					this.needsUpdate = false;
@@ -100,8 +100,8 @@
 				});
 			},
 			process(notification) {
-				axios.patch('/' + route('core.notifications.markAsRead', notification.id, false)).then(response => {
-					this.unreadCount = this.unreadCount > 0 ? --this.unreadCount : this.unreadCount;
+				axios.patch(route('core.notifications.markAsRead', notification.id, false).toString()).then(response => {
+					this.unreadCount = this.unreadCount > 0 ? --this.unreadCount : this.unreadCount; //fixme
 					notification.read_at = response.data.read_at;
 					this.$bus.$emit('redirect', notification.data.path);
 				}).catch(error => {
@@ -109,7 +109,7 @@
 				});
 			},
 			markAllAsRead() {
-				axios.patch('/' + route('core.notifications.markAllAsRead', [], false)).then(response => {
+				axios.patch(route('core.notifications.markAllAsRead', [], false)).then(response => {
 					this.setAllAsRead();
 				}).catch(error => {
 					this.handleError(error);
@@ -123,7 +123,7 @@
 				this.unreadCount = 0;
 			},
 			clearAll() {
-				axios.patch('/core/notifications/clearAll').then(response => {
+				axios.patch(route('core.notifications.clearAll', [], false)).then(response => {
 					this.notifications = [];
 					this.unreadCount = 0;
 				}).catch(error => {

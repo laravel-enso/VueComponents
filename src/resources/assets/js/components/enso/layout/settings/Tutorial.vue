@@ -8,7 +8,7 @@
         </div>
         <div class="level-right">
             <div class="level-item">
-            	<span class="button is-info is-small"
+                <span class="button is-info is-small"
                     @click="get()">
                     <i class="is-icon fa fa-question is-clickable"></i>
                 </span>
@@ -22,8 +22,8 @@
 
     import { introJs } from 'intro.js';
 
-	export default {
-		name: 'Tutorial',
+    export default {
+        name: 'Tutorial',
 
         props: {
             title: {
@@ -40,7 +40,7 @@
 
         methods: {
             get() {
-                axios.get('/' + route('system.tutorials.show', this.$route.name, false)).then(response => {
+                axios.get(route('system.tutorials.show', this.$route.name, false)).then(response => {
                     this.init(response.data);
                 }).catch(error => {
                     this.handleError(error);
@@ -55,7 +55,7 @@
                 this.intro.start();
             }
         }
-	};
+    };
 
 </script>
 

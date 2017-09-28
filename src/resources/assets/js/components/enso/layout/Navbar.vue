@@ -69,23 +69,23 @@
 
         components: { Notifications },
 
-		props: {
-			envIsLocal: {
-				type: Boolean,
-				default: false
-			}
-		},
+        props: {
+            envIsLocal: {
+                type: Boolean,
+                default: false
+            }
+        },
 
         computed: {
             ...mapState(['meta'])
         },
 
-		methods: {
+        methods: {
             goToProfile() {
-                this.$router.push('/administration/users/' + this.$store.state.user.id);
+                this.$router.push({ path: route('administration.users.show', this.$store.state.user.id, false) });
             }
         }
-	};
+    };
 
 </script>
 

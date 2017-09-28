@@ -141,10 +141,10 @@
 				});
 			},
 			setRedirectListener() {
-				this.$bus.$on('redirect', $event => this.$router.push({ path: $event}));
+				this.$bus.$on('redirect', $event => this.$router.push($event));
 			},
 			startImpersonating(id) {
-	        	axios.get('/' + route('core.impersonate.start', id, false)).then(response => {
+	        	axios.get(route('core.impersonate.start', id, false)).then(response => {
 	        		toastr.warning(response.data.message);
 	        		this.getState();
 	        	}).catch(error => {
@@ -152,8 +152,8 @@
 	        	});
 	        },
 	        stopImpersonating() {
-	        	axios.get('/' + route('core.impersonate.stop', [], false)).then(response => {
-	        		toastr.warning(response.data.message);
+	        	axios.get(route('core.impersonate.stop', [], false)).then(response => {
+	        		toastr.info(response.data.message);
 	        		this.getState();
 	        	}).catch(error => {
 	        		this.handleError(error);

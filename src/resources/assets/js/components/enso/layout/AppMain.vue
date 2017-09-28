@@ -51,7 +51,7 @@
         },
 
 		created() {
-			this.$router.push(route(this.implicitMenu.link, false, false));
+			this.$router.push(route(this.implicitMenu.link, [], false));
 			setTimeout(() => this.$emit('mounted'), 100);
 		},
 
