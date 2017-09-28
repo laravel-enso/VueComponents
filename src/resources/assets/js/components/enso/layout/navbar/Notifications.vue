@@ -1,23 +1,36 @@
 <template>
 
 	<div class="navbar-item has-dropdown"
-		:class="{ 'is-hoverable': notifications.length }">
-        <span class="navbar-link">
+		:class="{ 'is-active': isOpen }">
+        <a class="navbar-link"
+        	@click="toggle">
             <span class="icon is-small">
                 <i class="fa fa-bell">
                 </i>
             </span>
-        </span>
-        <div class="navbar-dropdown is-right">
-	        <a class="navbar-item" href="#">
-	            <div class="has-text-centered">
-	                <p>
-	                    <strong>
-	                        {{ __("Notifications") }}
-	                    </strong>
-	                </p>
-	            </div>
-	        </a>
+            <sup class="has-text-danger notification-count">{{ unreadCount }}</sup>
+            <overlay v-if="loading"></overlay>
+        </a>
+        <div class="navbar-dropdown is-right notification-list"
+        	@scroll="computeScrollPosition($event)"
+        	v-if="isOpen">
+    		<span v-for="notification in notifications">
+        		<a class="navbar-item"
+		        	@click="process(notification)">
+		        	<div class="navbar-content">
+		                <p class="is-notification" :class="{ 'is-bold': !notification.read_at }">
+	                        {{ notification.data.body }}
+		                </p>
+		                <p>
+			                <small class="has-text-info">{{ notification.created_at | timeFromNow }}</small>
+		                </p>
+		        	</div>
+		        </a>
+        		<hr class="navbar-divider">
+    		</span>
+    		<a v-if="notifications.length === 0" class="navbar-item">
+    			{{ __("You don't have any notifications") }}
+    		</a>
 	    </div>
     </div>
 
@@ -27,11 +40,14 @@
 
 	import { mapGetters } from 'vuex';
 	import { mapState } from 'vuex';
+	import Overlay from '../../components/Overlay.vue';
 	import Echo from "laravel-echo";
 	const Pusher = require('pusher-js');
 
 	export default {
 		name: 'Notifications',
+
+		components: { Overlay },
 
 		computed: {
 			...mapGetters('locale', ['__']),
@@ -47,25 +63,20 @@
 				needsUpdate: true,
 				offset: 0,
 				loading: false,
-				Echo: null
+				Echo: null,
+				isOpen: false
 			}
 		},
 
-		// created() {
-		// 	this.Echo = new Echo({
-		// 	    broadcaster: 'pusher',
-		// 	    key: this.pusherToken,
-		// 	    cluster: 'eu',
-		// 	    namespace: 'App.Events'
-		// 	});
-
-		// 	this.getCount();
-		// 	this.listen();
-		// },
+		created() {
+			this.init();
+			this.getCount();
+			this.listen();
+		},
 
 		methods: {
 			getCount() {
-				axios.get('/core/notifications/getCount').then(response => {
+				axios.get('/' + route('core.notifications.getCount', [], false)).then(response => {
 					this.unreadCount = response.data;
 				}).catch(error => {
 					this.handleError(error);
@@ -78,7 +89,7 @@
 
 				this.loading = true;
 
-				axios.get('/core/notifications/getList/' + this.offset + '/' + this.limit).then(response => {
+				axios.get('/' + route('core.notifications.getList', [this.offset, this.limit], false)).then(response => {
 					this.notifications = this.offset ? this.notifications.concat(response.data) : response.data;
 					this.offset = this.notifications.length;
 					this.needsUpdate = false;
@@ -89,16 +100,16 @@
 				});
 			},
 			process(notification) {
-				axios.patch('/core/notifications/markAsRead/' + notification.id).then(response => {
-					this.unreadCount = this.unreadCount ? --this.unreadCount : this.unreadCount;
-					window.location.href = notification.data.link;
-					notification = response.data; // fixme
+				axios.patch('/' + route('core.notifications.markAsRead', notification.id, false)).then(response => {
+					this.unreadCount = this.unreadCount > 0 ? --this.unreadCount : this.unreadCount;
+					notification.read_at = response.data.read_at;
+					this.$bus.$emit('redirect', notification.data.path);
 				}).catch(error => {
 					this.handleError(error);
 				});
 			},
 			markAllAsRead() {
-				axios.patch('/core/notifications/markAllAsRead').then(response => {
+				axios.patch('/' + route('core.notifications.markAllAsRead', [], false)).then(response => {
 					this.setAllAsRead();
 				}).catch(error => {
 					this.handleError(error);
@@ -119,15 +130,29 @@
 					this.handleError(error);
 				});
 			},
+			init() {
+				this.Echo = new Echo({
+				    broadcaster: 'pusher',
+				    key: this.pusherToken,
+				    cluster: 'eu',
+				    namespace: 'App.Events'
+				});
+			},
 			listen() {
 				let self = this;
-				console.log(this.user.id);
-				// this.Echo.private('App.User.' + this.user.id).notification(notification => {
-				// 	console.log(notification);
-				// 	self.unreadCount++;
-				// 	self.needsUpdate = true;
-				// 	self.offset = 0;
-				// });
+				this.Echo.private('App.User.' + this.user.id).notification(notification => {
+					self.unreadCount++;
+					self.needsUpdate = true;
+					self.offset = 0;
+					toastr.info(this.__('You just got a notification...'))
+				});
+			},
+			toggle() {
+				this.isOpen = !this.isOpen;
+
+				if (this.isOpen) {
+					this.getList();
+				}
 			},
 			computeScrollPosition(event) {
 				let a = event.target.scrollTop,
@@ -143,3 +168,26 @@
 	};
 
 </script>
+
+<style>
+
+	sup.notification-count {
+		font-size: 0.75em;
+		margin-top: -10px;
+	}
+
+	div.notification-list {
+		width: 300px;
+		overflow-x: hidden;
+		min-height: 50px;
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	p.is-notification {
+		white-space: normal;
+		width: 268px;
+		overflow-x: hidden;
+	}
+
+</style>

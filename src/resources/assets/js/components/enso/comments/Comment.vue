@@ -10,7 +10,7 @@
             </p>
         </figure>
         <div class="media-content">
-            <div class="content">
+            <div class="content comment">
                 <p>
                     <a>
                         {{ comment.owner.fullName }}
@@ -22,6 +22,7 @@
                     </span>
                 </p>
                 <span v-html="highlightTaggedUsers"
+                    class="comment-body"
                     v-if="!isEditing && !isNew">
                 </span>
                 <inputor v-if="isEditing || isNew"
@@ -142,7 +143,7 @@
             return {
                 showModal: false,
                 originalBody: null,
-                url: window.location.href,
+                path: this.$route.path,
             };
         },
 
@@ -163,7 +164,7 @@
                     type: this.type,
                     body: this.comment.body,
                     taggedUserList: this.comment.taggedUserList,
-                    url: this.url
+                    path: this.path
                 };
             },
             update() {
@@ -174,7 +175,7 @@
 
                 this.$parent.$parent.loading = true;
                 this.syncTaggedUsers();
-                this.comment.url = this.url; //fixme
+                this.comment.path = this.path; //fixme
 
                 axios.patch('/core/comments/' + this.comment.id, this.comment).then(response => {
                     Object.assign(this.comment, response.data.comment);
@@ -186,7 +187,6 @@
                 });
             },
             syncTaggedUsers() {
-                console.log(this.comment.body);
                 let self = this;
 
                 this.comment.taggedUserList.forEach(function(user, index) {
@@ -248,6 +248,14 @@
 
     span.highlight {
         color: #3097d1;
+    }
+
+    div.media-content > div.content.comment {
+        overflow-x: auto;
+    }
+
+    span.comment-body {
+        word-break: break-all;
     }
 
 </style>
