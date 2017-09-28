@@ -1,3 +1,3 @@
 require('./directives/focus');
-require('./directives/selectOnfocus');
+require('./directives/selectOnFocus');
 require('./directives/hljs');
