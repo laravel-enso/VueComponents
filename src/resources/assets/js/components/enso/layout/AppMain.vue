@@ -51,12 +51,8 @@
         },
 
 		created() {
-			this.$router.push(route(this.implicitMenu.link, [], false));
+			this.$router.push({ path: route(this.implicitMenu.link, [], false) });
 			setTimeout(() => this.$emit('mounted'), 100);
-		},
-
-		mounted() {
-			// this.$emit('mounted');
 		}
 	};
 

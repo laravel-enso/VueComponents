@@ -14,8 +14,7 @@
 
 		<app-main v-if="!showHome"
 			class="app-main"
-			:class="{ 'lights-off': lightsOff }"
-			@mounted="setThemeParams()">
+			:class="{ 'lights-off': lightsOff }">
 		</app-main>
 	</div>
 
@@ -141,7 +140,7 @@
 				});
 			},
 			setRedirectListener() {
-				this.$bus.$on('redirect', $event => this.$router.push($event));
+				this.$bus.$on('redirect', $event => this.$router.push({ path: $event }));
 			},
 			startImpersonating(id) {
 	        	axios.get(route('core.impersonate.start', id, false)).then(response => {

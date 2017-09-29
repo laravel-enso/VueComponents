@@ -82,7 +82,7 @@
 
         methods: {
             goToProfile() {
-                this.$router.push({ path: route('administration.users.show', this.$store.state.user.id, false) });
+                this.$router.push({ path: route('administration.users.show', this.user.id, false) });
             }
         }
     };
