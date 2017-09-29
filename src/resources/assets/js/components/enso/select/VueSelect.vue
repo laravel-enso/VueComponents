@@ -1,24 +1,24 @@
 <template>
 
     <div :id="'vue-select-' + _uid"
-        class="vue-select">
+         class="vue-select">
         <multiselect :value="value"
-            searchable allow-empty
-            :disabled="disabled"
-            :internal-search="!isServerSide"
-            :multiple="multiple"
-            :clear-on-select="!multiple"
-            :close-on-select="!multiple"
-            :select-label="labels.select"
-            :deselect-label="labels.deselect"
-            :selected-label="labels.selected"
-            :placeholder="labels.placeholder"
-            :loading="loading"
-            :options-limit="100"
-            :options="optionKeys"
-            :custom-label="customLabel"
-            @search-change="query=$event;getOptions()"
-            @input="$emit('input', $event)">
+                     searchable allow-empty
+                     :disabled="disabled"
+                     :internal-search="!isServerSide"
+                     :multiple="multiple"
+                     :clear-on-select="!multiple"
+                     :close-on-select="!multiple"
+                     :select-label="i18n.select"
+                     :deselect-label="i18n.deselect"
+                     :selected-label="i18n.selected"
+                     :placeholder="i18n.placeholder"
+                     :loading="loading"
+                     :options-limit="100"
+                     :options="optionKeys"
+                     :custom-label="customLabel"
+                     @search-change="query=$event;getOptions()"
+                     @input="$emit('input', $event)">
             <span slot="noResult">
                 {{ labels.noResult }}
             </span>
@@ -33,6 +33,7 @@
 <script>
 
     import Multiselect from 'vue-multiselect';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: { Multiselect },
@@ -75,29 +76,33 @@
                 type: Object,
                 default: null
             },
+            placeholder: {
+                type: String,
+                default: 'Placeholder' //Store.labels.selectOption,
+            },
             labels: {
                 type: Object,
                 default() {
                     return {
-                        placeholder: 'placeholder', //Store.labels.selectOption,
-                        selected: 'selected', //Store.labels.selected,
-                        select: 'select', //Store.labels.select,
-                        deselect: 'deselect', //Store.labels.deselect,
-                        noResult: 'no result', //Store.labels.noResult
+                        selected: 'Selected', //Store.labels.selected,
+                        select: 'Select', //Store.labels.select,
+                        deselect: 'Deselect', //Store.labels.deselect,
+                        noResult: 'No Result', //Store.labels.noResult,
                     };
                 }
             }
         },
 
         computed: {
+            ...mapGetters('locale', ['__']),
             isServerSide() {
                 return this.source !== null;
             },
             optionKeys() {
                 return this.keyMap === 'number'
-                   ? Object.keys(this.optionList).map(Number)
-                   : Object.keys(this.optionList);
-              },
+                    ? Object.keys(this.optionList).map(Number)
+                    : Object.keys(this.optionList);
+            },
             matchedValue() {
                 let self = this;
 
@@ -158,7 +163,14 @@
             return {
                 optionList: this.options,
                 loading: false,
-                query: ""
+                query: "",
+                i18n: {
+                    placeholder: '',
+                    selected: '',
+                    select: '',
+                    deselect: '',
+                    noResult: '',
+                },
             };
         },
 
@@ -193,7 +205,6 @@
             },
             processOptions(response) {
                 this.optionList = response.data;
-                let self = this;
 
                 if (!this.query && !this.matchedValue) {
                     this.clear();
@@ -210,12 +221,21 @@
             clear() {
                 this.$emit('input', this.multiple ? [] : null);
             },
+            translateLabels() {
+
+                for (let [key, value] of Object.entries(this.labels)) {
+                    this.i18n[key] = this.__(value);
+                }
+
+                this.i18n.placeholder = this.__(this.placeholder);
+            }
         },
 
         mounted() {
             if (this.isServerSide) {
                 this.getOptions();
             }
+            this.translateLabels();
         },
     }
 
