@@ -397,10 +397,6 @@
                     self.showModal = true;
                     self.selectedRecord = $(this).data('id');
                 });
-
-                $('table a.download-record').off('click').on('click', function(event) {
-                    //
-                });
             },
             addCustomActionListeners() {
                 let self = this;
@@ -502,7 +498,7 @@
                 return ''
                 + (this.actionButtons.standard.includes('show') ? '<a class="button show-record is-small is-table-button is-success" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-eye"></i></span></a>' : '')
                 + (this.actionButtons.standard.includes('edit') ? '<a class="button edit-record is-small is-table-button is-warning has-margin-left-small" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-pencil"></i></span></a>' : '')
-                + (this.actionButtons.standard.includes('download') ? '<a class="button is-table-button is-small is-primary has-margin-left-small" href="' + route(this.source + '.download', data, false) +'"><span class="icon is-small" data-id="' + data + '"><i class="fa fa-cloud-download"></i></span></a>' : '')
+                + (this.actionButtons.standard.includes('download') ? '<a class="button is-table-button is-small is-primary has-margin-left-small" href="' + route(this.source + '.download', data, false).toString() +'"><span class="icon is-small" data-id="' + data + '"><i class="fa fa-cloud-download"></i></span></a>' : '')
                 + (this.actionButtons.standard.includes('destroy') ? '<a class="button delete-record is-table-button is-small is-danger has-margin-left-small" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-trash-o"><i class=""></i></span></a>' : '');
             },
             getData() {
@@ -519,7 +515,7 @@
             deleteRecord() {
                 this.showModal = false;
 
-                axios.delete(route(this.source + '.destroy', this.selectedRecord, false)).then(response => {
+                axios.delete(route(this.source + '.destroy', this.selectedRecord, false).toString()).then(response => {
                     this.dtHandle.ajax.reload();
                     toastr.success(response.data.message);
                 }).catch(error => {
