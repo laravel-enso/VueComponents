@@ -12,7 +12,7 @@
         <a slot="control-1" class="card-header-icon">
             <file-uploader
                 @upload-successful="get()"
-                :url="'/core/documents/upload/' + this.type + '/' + this.id"
+                :url="uploadLink"
                 multiple>
             </file-uploader>
         </a>
@@ -73,6 +73,9 @@
 
         computed: {
             ...mapGetters('locale', ['__']),
+            uploadLink() {
+                return route('core.documents.upload', [this.type, this.id], false)
+            },
             filteredDocuments() {
                 if (this.query) {
                     return this.documents.filter((document) => {
@@ -98,15 +101,11 @@
             get() {
                 this.loading = true;
 
-                axios.get(route(
-                    'core.documents.index',
-                    { type: this.type, id: this.id }
-                )).then(response => {
-                    this.documents = response.data;
+                axios.get(route('core.documents.index', [ this.type, this.id ])).then(({ data }) => {
+                    this.documents = data;
                     this.loading = false;
                 }).catch(error => {
                     this.loading = false;
-                    this.handleError(error);
                 });
             },
             destroy(index) {

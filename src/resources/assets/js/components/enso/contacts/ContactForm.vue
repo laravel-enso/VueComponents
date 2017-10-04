@@ -171,21 +171,19 @@
                 return this.editMode ? this.update() : this.store();
             },
             store() {
-                axios.post('/core/contacts', {contact: this.contact, id: this.id, type: this.type}).then(response => {
+                axios.post(route('core.contacts.store', [], false), {contact: this.contact, id: this.id, type: this.type}).then(response => {
                     this.$emit('store', response.data);
                 }).catch(error => {
-                    this.handleError(error);
                     if (error.response.data.errors) {
                         this.errors = error.response.data.errors;
                     }
                 });
             },
             update(index) {
-                axios.patch('/core/contacts/' + this.contact.id, {contact: this.contact, id: this.id, type: this.type}).then(response => {
+                axios.patch(route('core.contacts.update', this.contact.id, false), {contact: this.contact, id: this.id, type: this.type}).then(response => {
                     this.$emit('update', this.contact);
                 }).catch(error => {
-                    this.handleError(error);
-                    if (error.response.data.erros) {
+                    if (error.response.data.errors) {
                         this.errors = error.response.data.errors;
                     }
                 });

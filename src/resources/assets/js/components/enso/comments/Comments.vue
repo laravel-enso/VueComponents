@@ -113,7 +113,7 @@
             get() {
                 this.loading = true;
 
-                axios.get('/core/comments', { params: this.getParams() }).then(response => {
+                axios.get(route('core.comments.index', [], false), { params: this.getParams() }).then(response => {
                     this.comments = this.offset
                         ? this.comments.concat(response.data.comments)
                         : response.data.comments;
@@ -123,7 +123,6 @@
                     this.loading = false;
                 }).catch(error => {
                     this.loading = false;
-                    this.handleError(error);
                 });
             },
             getParams() {

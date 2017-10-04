@@ -3,7 +3,7 @@
     <article class="media">
         <figure class="media-left">
             <p class="image is-48x48">
-                <img :src="'/core/avatars/' + comment.owner.avatarId"
+                <img :src="getAvatarLink(comment)"
                     alt="user image"
                     class="avatar"
                     width="32">
@@ -124,6 +124,7 @@
 
         computed: {
             ...mapGetters('locale', ['__']),
+            ...mapGetters(['avatarLink']),
             highlightTaggedUsers() {
                 let body = this.comment.body;
 
@@ -150,12 +151,11 @@
         methods: {
             post() {
                 this.$parent.$parent.loading = true;
-                axios.post('/core/comments', this.postParams()).then(response => {
+                axios.post(route('core.comments.store', [], false), this.postParams()).then(response => {
                     this.$emit('add', response.data)
                     this.$parent.$parent.loading = false;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
-                    this.handleError(error);
                 });
             },
             postParams() {
@@ -177,13 +177,12 @@
                 this.syncTaggedUsers();
                 this.comment.path = this.path; //fixme
 
-                axios.patch('/core/comments/' + this.comment.id, this.comment).then(response => {
+                axios.patch(route('core.comments.update', this.comment.id, false), this.comment).then(response => {
                     Object.assign(this.comment, response.data.comment);
                     this.$parent.$parent.loading = false;
                     this.originalBody = null;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
-                    this.handleError(error);
                 });
             },
             syncTaggedUsers() {
@@ -199,13 +198,17 @@
                 this.showModal = false;
                 this.$parent.$parent.loading = true;
 
-                axios.delete('/core/comments/' + this.comment.id).then(response => {
+                axios.delete(route('core.comments.destroy', this.comment.id, false)).then(response => {
                     this.$emit('delete', this.index)
                     this.$parent.$parent.loading = false;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
-                    this.handleError(error);
                 });
+            },
+            getAvatarLink(comment) {
+                return this.isNew
+                    ? this.avatarLink
+                    : route('core.avatars.show', comment.owner.avatarId || 'null' , false).toString();
             }
         }
     }

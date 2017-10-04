@@ -9,11 +9,11 @@
                     <div class="field">
                         <label class="label">
                             {{ field.label }}
+                            <p v-if="errors.has(field.column)"
+                                class="help is-danger is-pulled-right">
+                                {{ errors.get(field.column) }}
+                            </p>
                         </label>
-                        <p v-if="errors.has(field.column)"
-                            class="help is-danger is-pulled-right">
-                            {{ errors.get(field.column) }}
-                        </p>
                         <span v-if="field.meta.custom">
                             <slot :name="field.column"
                                 :field="field"
@@ -137,9 +137,7 @@
                         this.$router.push({ name: response.data.redirect, params: { id: response.data.id } });
                     }
                 }).catch(error => {
-                    this.handleError(error);
-                }).catch(error=> {
-                    this.errors.set(error.response.data);
+                    this.errors.set(error.response.data.errors);
                     this.loading = false;
                 });
             },
@@ -165,7 +163,6 @@
                     this.$router.push({ name: response.data.redirect });
                 }).catch(error => {
                     this.loading = false;
-                    this.handleError(error);
                 });
             }
         }

@@ -182,12 +182,11 @@
 
                 this.loading = true;
 
-                axios.get(this.source, {params: this.getParams()}).then(response => {
+                axios.get(route(this.source, [], null), {params: this.getParams()}).then(response => {
                     this.processOptions(response);
                     this.loading = false;
                 }).catch(error => {
                     this.loading = true;
-                    this.handleError(error);
                 });
             },
             getParams() {

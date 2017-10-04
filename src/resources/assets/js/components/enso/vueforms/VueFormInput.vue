@@ -10,7 +10,7 @@
                 v-model="field.value"
                 type="text"
                 :disabled="field.meta.disabled">
-            <span class="icon is-small is-right"
+            <span class="icon is-small is-right has-text-danger"
                 v-if="hasError">
                 <i class="fa fa-warning"></i>
             </span>
@@ -24,7 +24,7 @@
                 v-model="field.value"
                 type="email"
                 :disabled="field.meta.disabled">
-            <span class="icon is-small is-right"
+            <span class="icon is-small is-right has-text-danger"
                 v-if="hasError">
                 <i class="fa fa-warning"></i>
             </span>
@@ -41,7 +41,7 @@
                 :min="field.meta.min"
                 :max="field.meta.max"
                 :disabled="field.meta.disabled">
-            <span class="icon is-small is-right"
+            <span class="icon is-small is-right has-text-danger"
                 v-if="hasError">
                 <i class="fa fa-warning"></i>
             </span>

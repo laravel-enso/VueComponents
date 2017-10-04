@@ -30,12 +30,12 @@
                     $(el).atwho({
                         at: "@",
                         searchKey: "fullName",
-                        displayTpl: "<li id='${id}' name='${fullName}'><img src='/core/avatars/${avatarId}' alt='User Image' class='atwho'>${fullName}</li>",
+                        displayTpl: "<li id='${id}' name='${fullName}'><img src='/api/core/avatars/${avatarId}' alt='User Image' class='atwho'>${fullName}</li>",
                         insertTpl: "@${fullName}",
                         acceptSpaceBar: true,
                         callbacks: {
                             remoteFilter: _.debounce((query, callback) => {
-                                axios.get('/core/comments/getTaggableUsers/' + query).then(response => {
+                                axios.get(route('core.comments.getTaggableUsers', query, false)).then(response => {
                                     callback(response.data);
                                 });
                             }, 200)

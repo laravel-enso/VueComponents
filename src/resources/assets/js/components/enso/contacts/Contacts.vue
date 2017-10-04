@@ -106,12 +106,11 @@
             get() {
                 this.loading = true;
 
-                axios.get('/core/contacts/list', { params: { id: this.id, type: this.type } }).then(response => {
+                axios.get(route('core.contacts.list', { id: this.id, type: this.type }, false)).then(response => {
                     this.contacts = response.data;
                     this.loading = false;
                 }).catch(error => {
                     this.loading = false;
-                    this.handleError(error);
                 });
             },
             emptyContact() {

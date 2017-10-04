@@ -105,12 +105,11 @@
                 this.showModal = false;
                 this.$parent.$parent.loading = true;
 
-                axios.delete('/core/contacts/' + this.contact.id).then(response => {
+                axios.delete(route('core.contacts.destroy', this.contact.id, false)).then(response => {
                     this.$emit('delete', this.index);
                     this.$parent.$parent.loading = false;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
-                    this.handleError(error);
                 });
             }
         }

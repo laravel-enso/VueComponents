@@ -17,7 +17,7 @@
         <span class="is-pulled-right">
             <a class="button is-small is-info"
                 v-if="document.isDownloadable"
-                :href="'/core/documents/download/' + document.id">
+                :href="getDownloadLink(document)">
                 <span class="icon is-small">
                     <i class="fa fa-cloud-download"></i>
                 </span>
@@ -83,20 +83,22 @@
 
         methods: {
             show(id) {
-                window.open('/core/documents/show/' + id, '_blank').focus();
+                window.open(route('core.documents.show', id, false), '_blank').focus();
             },
             destroy() {
                 this.showModal = false;
                 this.$parent.$parent.loading = true;
 
-                axios.delete('/core/documents/destroy/' + this.document.id).then((response) => {
+                axios.delete(route('core.documents.destroy', this.document.id, false)).then(() => {
                     this.$parent.$parent.loading = false;
                     this.$emit('delete', this.index);
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
-                    this.handleError(error);
                 });
             },
+            getDownloadLink(doc) {
+                return route('core.documents.download', doc.id, false);
+            }
         }
     }
 
