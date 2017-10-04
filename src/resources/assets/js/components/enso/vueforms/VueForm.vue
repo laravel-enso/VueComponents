@@ -8,7 +8,7 @@
                     :class="columnSize">
                     <div class="field">
                         <label class="label">
-                            {{ field.label }}
+                            {{ __(field.label) }}
                             <p v-if="errors.has(field.column)"
                                 class="help is-danger is-pulled-right">
                                 {{ errors.get(field.column) }}
@@ -63,19 +63,19 @@
             <button class="button is-danger"
                 v-if="data.actions.destroy"
                 @click.prevent="showModal = true">
-                <span>{{ data.actions.destroy.label }}</span>
+                <span>{{ __(data.actions.destroy.label) }}</span>
             </button>
             <button class="button is-info"
                 @click.prevent="create()"
                 v-if="data.actions.create">
-                {{ data.actions.create.label }}
+                {{ __(data.actions.create.label) }}
             </button>
             <button type="submit"
                 class="button is-success is-pulled-right"
                 :class="{ 'is-loading': loading }"
                 v-if="data.actions.store || data.actions.update">
-                <span v-if="data.actions.store">{{ data.actions.store.label }}</span>
-                <span v-if="data.actions.update">{{ data.actions.update.label }}</span>
+                <span v-if="data.actions.store">{{ __(data.actions.store.label) }}</span>
+                <span v-if="data.actions.update">{{ __(data.actions.update.label) }}</span>
             </button>
             <div class="is-clearfix"></div>
         </form>
@@ -95,6 +95,7 @@
     import Datepicker from '../bulma/Datepicker.vue';
     import VueFormInput from './VueFormInput.vue';
     import Overlay from '../bulma/Overlay.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: { Modal, VueSelect, Datepicker, VueFormInput, Overlay },
@@ -115,6 +116,7 @@
         },
 
         computed: {
+            ...mapGetters('locale', ['__']),
             columnSize() {
                 return 'is-' + parseInt(12/this.data.columns);
             }
