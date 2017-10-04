@@ -1,6 +1,7 @@
 <template>
 
     <textarea class="textarea is-full-width"
+        @keyup.shift.enter="$emit('save-comment')"
         v-focus
         v-inputor-on-focus
         v-model="comment.body"

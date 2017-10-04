@@ -26,6 +26,7 @@
                     v-if="!isEditing && !isNew">
                 </span>
                 <inputor v-if="isEditing || isNew"
+                     @save-comment="isNew ? post() : update()"
                     :comment="comment"
                     :is-new="isNew"
                     :is-editing="isEditing">
