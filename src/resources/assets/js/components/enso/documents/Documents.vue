@@ -101,7 +101,7 @@
             get() {
                 this.loading = true;
 
-                axios.get(route('core.documents.index', [ this.type, this.id ])).then(({ data }) => {
+                axios.get(route('core.documents.index', [ this.type, this.id ], false)).then(({ data }) => {
                     this.documents = data;
                     this.loading = false;
                 }).catch(error => {
