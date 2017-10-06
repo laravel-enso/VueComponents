@@ -545,6 +545,7 @@
 
                 this.dtHandle.destroy();
                 this.mountDataTable();
+                this.$bus.$emit('nprogress-done');
             },
             exportExcel() {
                 axios.get(route(this.source + '.exportExcel', null, false), {params: this.getExportParams()}).then(response => {
