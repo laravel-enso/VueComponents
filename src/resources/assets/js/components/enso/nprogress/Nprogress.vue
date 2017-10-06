@@ -44,7 +44,7 @@
 
 	        this.$router.afterEach(route => {
 	        	let self = this;
-	        	setTimeout(() => self.addResponse(), 2000);
+	        	setTimeout(() => self.addResponse(), 1000);
 	        });
 		},
 
