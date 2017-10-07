@@ -2,6 +2,10 @@ table.dataTable {
     margin-bottom: 0.5rem;
 }
 
+td > span.action-buttons {
+	display:inline-flex;
+}
+
 .button.is-small.is-table-button {
     height: 1.4em;
     width: 1.4em;

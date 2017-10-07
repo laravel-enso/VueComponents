@@ -158,7 +158,7 @@
                     },
                     responsivePriority: 1,
                     searchable: false,
-                    orderable: false,
+                    orderable: false
                 },
                 tableOptions: {
                     dom: 'Bfrtip',
@@ -489,7 +489,7 @@
                     this.getStandardActionButtons(data);
             },
             getCustomActionButtons(data) {
-                let buttons = '';
+                let buttons = '<span class="action-buttons">';
 
                 this.actionButtons.custom.forEach(action => {
                     buttons += '<a class="button is-small is-table-button ' + action.event.toLowerCase() + ' ' + action.class + '" data-id="' +
@@ -503,7 +503,8 @@
                 + (this.actionButtons.standard.includes('show') ? '<a class="button show-record is-small is-table-button is-success" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-eye"></i></span></a>' : '')
                 + (this.actionButtons.standard.includes('edit') ? '<a class="button edit-record is-small is-table-button is-warning has-margin-left-small" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-pencil"></i></span></a>' : '')
                 + (this.actionButtons.standard.includes('download') ? '<a class="button is-table-button is-small is-primary has-margin-left-small" href="' + route(this.source + '.download', data, false).toString() +'"><span class="icon is-small" data-id="' + data + '"><i class="fa fa-cloud-download"></i></span></a>' : '')
-                + (this.actionButtons.standard.includes('destroy') ? '<a class="button delete-record is-table-button is-small is-danger has-margin-left-small" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-trash-o"><i class=""></i></span></a>' : '');
+                + (this.actionButtons.standard.includes('destroy') ? '<a class="button delete-record is-table-button is-small is-danger has-margin-left-small" data-id="' + data + '"><span class="icon is-small"><i class="fa fa-trash-o"><i class=""></i></span></a>' : '')
+                + '</span>';
             },
             getData() {
                 if (!this.dtHandle) {
