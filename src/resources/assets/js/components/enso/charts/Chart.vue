@@ -1,6 +1,6 @@
 <template>
 
-	<canvas class="chart-js"></canvas>
+	<canvas class="chart-js" width="400" :height="400/this.heightDivider"></canvas>
 
 </template>
 
@@ -34,6 +34,12 @@
 			return {
 				chart: null,
 			};
+		},
+
+		computed: {
+			heightDivider() {
+				return ['line', 'bar', 'bubble'].includes(this.type) ? 2 : 1;
+			}
 		},
 
 		watch: {
@@ -80,7 +86,6 @@
 
 	canvas.chart-js {
 	    max-width: 100%;
-
   }
 
 </style>
