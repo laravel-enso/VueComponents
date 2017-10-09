@@ -94,6 +94,7 @@
                     this.$emit('delete', this.index);
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
+                    this.handleError(error);
                 });
             },
             getDownloadLink(doc) {

@@ -187,6 +187,7 @@
                     this.loading = false;
                 }).catch(error => {
                     this.loading = true;
+                    this.handleError(error);
                 });
             },
             getParams() {

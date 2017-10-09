@@ -174,18 +174,22 @@
                 axios.post(route('core.contacts.store', [], false), {contact: this.contact, id: this.id, type: this.type}).then(response => {
                     this.$emit('store', response.data);
                 }).catch(error => {
-                    if (error.response.data.errors) {
+                    if (error.response.status === 422) {
                         this.errors = error.response.data.errors;
                     }
+
+                    this.handleError(error);
                 });
             },
             update(index) {
                 axios.patch(route('core.contacts.update', this.contact.id, false), {contact: this.contact, id: this.id, type: this.type}).then(response => {
                     this.$emit('update', this.contact);
                 }).catch(error => {
-                    if (error.response.data.errors) {
+                    if (error.response.status === 422) {
                         this.errors = error.response.data.errors;
                     }
+
+                    this.handleError(error);
                 });
             },
         }

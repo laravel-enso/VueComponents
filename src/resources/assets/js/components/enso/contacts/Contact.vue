@@ -110,6 +110,7 @@
                     this.$parent.$parent.loading = false;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
+                    this.handleError(error);
                 });
             }
         }

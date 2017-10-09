@@ -71,6 +71,7 @@
 					this.initialised = this.initialised || true;
 				}).catch(error => {
 					this.loading = false;
+					this.handleError(error);
 				});
 			}
 		},

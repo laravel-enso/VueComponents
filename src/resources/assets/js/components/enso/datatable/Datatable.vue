@@ -268,6 +268,8 @@
                     this.processInitData(response.data);
                 }).then(() => {
                     this.mountDataTable();
+                }).catch(error => {
+                    this.handleError(error);
                 });
             },
             processInitData(data) {
@@ -523,6 +525,8 @@
                 axios.delete(route(this.source + '.destroy', this.selectedRecord, false).toString()).then(response => {
                     this.dtHandle.ajax.reload();
                     toastr.success(response.data.message);
+                }).catch(error => {
+                    this.handleError(error);
                 });
 
                 this.selectedRecord = null;
@@ -551,6 +555,8 @@
             exportExcel() {
                 axios.get(route(this.source + '.exportExcel', null, false), {params: this.getExportParams()}).then(response => {
                     toastr.success(response.data.message);
+                }).catch(error => {
+                    this.handleError(error);
                 });
             },
             getExportParams() {

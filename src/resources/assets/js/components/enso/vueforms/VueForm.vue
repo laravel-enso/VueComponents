@@ -165,6 +165,7 @@
                     this.$router.push({ name: response.data.redirect });
                 }).catch(error => {
                     this.loading = false;
+                    this.handleError(error);
                 });
             }
         }

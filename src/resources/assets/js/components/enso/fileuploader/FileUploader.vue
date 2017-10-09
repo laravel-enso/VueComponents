@@ -61,6 +61,7 @@
                 }).catch(error => {
                     this.resetForm();
                     this.$emit('upload-error');
+                    this.handleError(error);
                 });
             },
             getFormData() {

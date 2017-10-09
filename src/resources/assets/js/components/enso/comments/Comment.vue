@@ -157,6 +157,7 @@
                     this.$parent.$parent.loading = false;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
+                    this.handleError(error);
                 });
             },
             postParams() {
@@ -184,6 +185,7 @@
                     this.originalBody = null;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
+                    this.handleError(error);
                 });
             },
             syncTaggedUsers() {
@@ -204,6 +206,7 @@
                     this.$parent.$parent.loading = false;
                 }).catch(error => {
                     this.$parent.$parent.loading = false;
+                    this.handleError(error);
                 });
             },
             getAvatarLink(comment) {
