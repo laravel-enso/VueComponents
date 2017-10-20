@@ -1,7 +1,6 @@
 <template>
 
-    <div :id="'vue-select-' + _uid"
-         class="vue-select">
+    <div class="vue-select">
         <multiselect :value="value"
             searchable allow-empty
             :disabled="disabled"
@@ -24,6 +23,12 @@
             </span>
             <template slot="option" slot-scope="props">
                 <span v-html="$options.filters.highlight(optionList[props.option], query)"></span>
+            </template>
+            <template slot="clear" slot-scope="props">
+                <div class="multiselect__clear"
+                    v-if="hasSelection"
+                    @mousedown.prevent.stop="clear()">
+                </div>
             </template>
         </multiselect>
     </div>
