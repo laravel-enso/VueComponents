@@ -24,7 +24,8 @@
             <template slot="option" slot-scope="props">
                 <span v-html="$options.filters.highlight(optionList[props.option], query)"></span>
             </template>
-            <template slot="clear" slot-scope="props">
+            <template slot="clear" slot-scope="props"
+                v-if="!disabled">
                 <div class="multiselect__clear"
                     v-if="hasSelection"
                     @mousedown.prevent.stop="clear()">
@@ -323,11 +324,12 @@
         font-size: 16px;
     }
 
-        .multiselect__clear {
+    .multiselect__clear {
         position: absolute;
-        right: 41px;
-        height: 40px;
-        width: 40px;
+        top: 4px;
+        right: 35px;
+        height: 22px;
+        width: 22px;
         display: block;
         cursor: pointer;
         z-index: 2;
@@ -345,11 +347,11 @@
         content: "";
         display: block;
         position: absolute;
-        width: 3px;
+        width: 2px;
         height: 16px;
         background: #aaa;
-        top: 9px;
-        right: 4px;
+        top: 3px;
+        right: 10px;
     }
 
 </style>
