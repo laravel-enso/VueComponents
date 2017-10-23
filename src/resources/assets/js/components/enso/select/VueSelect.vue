@@ -1,7 +1,6 @@
 <template>
 
-    <div :id="'vue-select-' + _uid"
-         class="vue-select">
+    <div class="vue-select">
         <multiselect :value="value"
             searchable allow-empty
             :disabled="disabled"
@@ -24,6 +23,13 @@
             </span>
             <template slot="option" slot-scope="props">
                 <span v-html="$options.filters.highlight(optionList[props.option], query)"></span>
+            </template>
+            <template slot="clear" slot-scope="props"
+                v-if="!disabled">
+                <div class="multiselect__clear"
+                    v-if="hasSelection"
+                    @mousedown.prevent.stop="clear()">
+                </div>
             </template>
         </multiselect>
     </div>
@@ -98,25 +104,13 @@
             isServerSide() {
                 return this.source !== null;
             },
+            hasSelection() {
+                return (this.multiple && this.value.length) || (!this.multiple && this.value !== null);
+            },
             optionKeys() {
                 return this.keyMap === 'number'
                     ? Object.keys(this.optionList).map(Number)
                     : Object.keys(this.optionList);
-            },
-            matchedValue() {
-                let self = this;
-
-                if (!this.multiple) {
-                    return this.optionKeys.filter(option => {
-                        return option === self.value;
-                    }).length > 0;
-                }
-
-                return this.optionKeys.filter(option => {
-                    return self.value.filter(val => {
-                        return val === option;
-                    }).length > 0;
-                }).length > 0;
             }
         },
 
@@ -202,9 +196,24 @@
             processOptions(response) {
                 this.optionList = response.data;
 
-                if (!this.query && !this.matchedValue) {
+                if (!this.query && !this.valueIsMatched()) {
                     this.clear();
                 }
+            },
+            valueIsMatched() {
+                let self = this;
+
+                if (!this.multiple) {
+                    return this.optionKeys.filter(option => {
+                        return option === self.value;
+                    }).length > 0;
+                }
+
+                return this.optionKeys.filter(option => {
+                    return self.value.filter(val => {
+                        return val === option;
+                    }).length > 0;
+                }).length > 0;
             },
             customLabel(option) {
                 return this.optionList[option];
@@ -313,6 +322,36 @@
 
     .multiselect, .multiselect__input, .multiselect__single {
         font-size: 16px;
+    }
+
+    .multiselect__clear {
+        position: absolute;
+        top: 4px;
+        right: 35px;
+        height: 22px;
+        width: 22px;
+        display: block;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .multiselect__clear:before {
+        transform: rotate(45deg);
+    }
+
+    .multiselect__clear:after {
+        transform: rotate(-45deg);
+    }
+
+    .multiselect__clear:after, .multiselect__clear:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 2px;
+        height: 16px;
+        background: #aaa;
+        top: 3px;
+        right: 10px;
     }
 
 </style>
