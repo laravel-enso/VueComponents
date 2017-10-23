@@ -11,56 +11,217 @@
 VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Features
-- `Dashboard`, a highly integrated component used for easily rendering a dashboard containing charts or datatables
+- Bulma elements, suite of common, reusable components styled for Bulma
+- Charts components, for the [Charts](https://github.com/laravel-enso/Charts) package
+- Comments components, for the [CommentsManager](https://github.com/laravel-enso/CommentsManager) package
+- Contacts components, for the [Contacts](https://github.com/laravel-enso/Contacts) package
+- Datatable component, for the [Datatable](https://github.com/laravel-enso/Datatable) package
+- Documents components, for the [DocumentsManager](https://github.com/laravel-enso/DocumentsManager) package
+- FileUploader component, for handling the upload of files
+- NProgress component, for showing load progress
+- RoleManager components, for the [RoleManager](https://github.com/laravel-enso/RoleManager) package
+- Select component, for the [Select](https://github.com/laravel-enso/Select) package
+- VueForms components, for the [FormBuilder](https://github.com/laravel-enso/FormBuilder) package
+
+#### Bulma
+- `Card`, a multi purpose container
 - `Datepicker`, a beautiful date/time picker based on [flatpickr](https://chmln.github.io/flatpickr/)
 - `Modal`, an ultra light modal component
+- `Overlay`, an overlay container
 - `Paginate`, a simple to use and powerful pagination module
-- `Typeahead`, an updated & improved typeahead  
-- `VueFilter`, a single option filtering component, that can be used in conjuction with datatables or anywhere else you need it 
+- `Tabs`, a tab component
+- `VueFilter`, a single option filtering component, that can be used in conjunction with datatables or anywhere else you need it 
 
-#### Dashboard
-- gets the data for rendering its own components from the user's preferences object
-- take an optional `params` object, used for cusomization inside the chart or datatable children 
+##### Card
+- `open`, boolean, flag for the initial state of the card | default `true` | (optional)
+- `header`, boolean, flag for displaying the header | default `true` | (optional)
+- `footer`, boolean, flag for displaying the footer | default `false` | (optional)
+- `footer-items`, number, parameter for rendering the proper number of footer card items | default `0` | (optional)
+- `icon`, string, the class name for the icon of the card | default `null` | (optional)
+- `title`, string, the name that's displayed as title | default `null` | (optional)
+- `search`, boolean, flag for showing the search box | default `false` | (optional)
+- `badge`, number, value that's displayed | default null | (optional)
+- `refresh`, boolean, flag for displaying the minimize/collapse control | default true | (optional)
+- `removable`, boolean, flag for showing the close button | default true | (optional)
+- `overlay`, boolean, flag for rendering the overlay inner component | default false, | (optional)
+- `controls`, boolean, flag for showing the controls slots | default false | (optional)
 
 #### Datepicker
 Takes the following parameters:
-- `name` - string, the name of the underlying input. Defaults to null.
-- `time` - boolean, enables the time picking functionality alongisde date. Defaults to false. 
-- `timeOnly` - boolean, enables just the time picking functionality. Defaults to false.
-- `placeholder` - string, placeholder for the input. Defaults to the global label kept in the Store.
-- `disabled` - boolean, disables the editing of the picker. Defaults to false.
-- `format` - string, format of the date. Defaults to `d-m-Y`.
-- `inputClass` - string, the class of the input. Defaults to `form-control`.
+- `value`, null/string/Date/Array, the selected date/date interval | default null | (required)
+- `name` - string, the name of the underlying input | defaults to null | (optional)
+- `time` - boolean, enables the time picking functionality alongside date | default false | (optional) 
+- `timeOnly` - boolean, enables just the time picking functionality | default false | (optional)
+- `placeholder` - string, placeholder for the input | defaults to the global label kept in the Store. | (optional)
+- `disabled` - boolean, disables the editing of the picker | default false | (optional)
+- `format` - string, format of the date | default `d-m-Y` | (optional)
+- `inputClass` - string, the class of the input | default `form-control`
 
 #### Modal
 Takes the following parameters:
-- `show`, boolean, makes the modal visible. Defaults to false.
-- `header`, boolean, shows/hides the dialog's header. Defaults to false. 
-- `container-style`, object, styles the modal container. Defaults to `{ 'max-width': '250px' }`.
+- `show`, boolean, makes the modal visible | defaults false | (required)
+- `card`, boolean, shows/hides the dialog's header | defaults to false | (optional) 
+- `container-style`, object, styles the modal container | defaults to `{}` | (optional)
+
+#### Overlay
+Takes the following parameters:
+- `size`, small/medium/large, size of the loader | default small | (optional)
+- `opacity`, boolean, sets the opacity class | default true | (optional)
+- `color`, string, the color code for the overlay | default `#00d1b2` | (optional)
 
 #### Paginate
 Takes the following parameters:
-- `list`, array, the items that need to be paginated. Required.
-- `length`, number, the starting number of items on one page. Defaults to 10.
-- `lengths`, array, an array of lengths to choose from. Defaults to `[10, 15, 20, 25, 30]`.
-- `border`, boolean, a flag for showing a border arount the component. Defaults to `false`.    
+- `list`, array, the items that need to be paginated | (required)
+- `length`, number, the starting number of items on one page | default 10 | (optional)
+- `lengths`, array, an array of lengths to choose from | default `[10, 15, 20, 25, 30]` | (optional)
+- `border`, boolean, a flag for showing a border around the component | default false | (optional)    
 
-#### Typeahead
+#### Tabs
 Takes the following parameters:
-- `url` - string, the link to query for results. Required.
-- `display-property` - string, the attribute to be displayed when showing the retrieved items. Required.
-- `disabled` - boolean, disables the component. Defaults to false.
-- `limit` - number, the number of items to display when typing. Defaults to 10.
-- `params` - object, parameters to be passed when making the request to the backend. Defaults to null.
-- `placeholder` - string, is an input placeholder. Defaults to 'Searching for something?'
-- `reg-exp` - string, regular expression used to validate the user input. Defaults to `^[A-Za-z0-9 _-]*[A-Za-z0-9][A-Za-z0-9 _-]*$` 
-- `value` - string, the starting value of the input. Defaults to empty string.
+- `tabs`, array, the list of tabs to render | (required)
+- `title`, string, the title string | default null | (optional)
+- `align`, left/center/right, the alignment of the tabs | default `left` | (optional)
+- `active`, number, the index of the active tab | default 0 | (optional)
+- `icon`, string, the string class of the icon | default null | (optional)
 
 #### VueFilter
 Takes the following parameters:
-- `options` - object, the options the user can choose from when filtering. Required
-- `title` - string, the title to display above the options. Defaults to null.
-- `theme` - string, the theme to use for styling the box. Defaults to `primary`.
+- `options` - object, the options the user can choose from when filtering | default `{}` | (required)
+- `value` -  the selected value from the list of options | (required)
+- `title` - string, the title to display above the options | default null | (optional)
+- `theme` - string, the theme to use for styling the box | default `primary` | (optional)
+- `off-switch` - boolean, flag for showing an off switch | default true | (optional)
+
+#### Charts
+The `Chart.vue` component can be used anywhere by integrating it into any other component or page, and takes the following parameters:
+- `type` - `bar`, `polarArea`, `pie`, `doughnut`, `radar`, `bubble` | (required)
+- `data` - object containing the properly formatted data for the given chart type | (required)
+- `options` - ChartJs options object | (optional)
+
+The `ChartCard.vue` component is a chart in a Bulma card, and is meant to be used to retrieve its own data, and take the following parameters:
+- `source` - the route path that will fetch the data | (required)
+- `params` - parameters object that gets passed to the backend, may be used for customization of the data-set | (optional)
+
+#### Comments
+The `Comments.vue` component takes the following parameters:
+
+- `id` - number, the id of the commentable model | (required)
+- `type` - string, the commentable model alias you set at the installation step #3 | (required)
+- `paginate` - number, the paginate size | default 5 | (optional)
+- `open` - boolean, flag that makes the component start collapsed or open | default false | (optional)
+- `title` - string, title for the component | default 'Comments' | (optional)
+
+#### Contacts
+The `Contacts.vue` component can be used anywhere and can be integrated into any other component or page, and takes the following parameters:
+- `type` - string, the entity type, set in the configuration file | (required)
+- `id` - number, the id of the entity | (required)
+- `open` - boolean, flag which, if true, makes the component start in the open state | default false | (optional)
+- `title` - title for the component | default 'Contacts' | (optional)
+
+#### Datatable
+The `Datatable.vue` takes the following parameters:
+- `source` - required, must reference the controllers base route, where both initTable & getTableData endpoints exist
+- `extra-filters` - reactive object of the following format
+    ```
+    "extraFilters": {
+        "table": {
+            "field_1" : '',
+            "field_2" : '',
+        }
+    }
+    ```
+- `custom-params` - extra parameters sent to the back-end for custom logic / queries
+    ```
+    "customParams": {
+        "orders": {
+            dispatched: ''
+        }
+    }
+    ```
+- `interval-filters` - where `dbDateFormat` is REQUIRED if the filter values are dates. The given format has to match the database date format
+    ```
+    "intervalFilters": {
+       "table":{
+          "created_at": {
+             "min":"value",
+             "max":"value",
+             "dbDateFormat": "Y-m-d"
+          },
+          "amount": {
+            "min": 0,
+            "max": 1000
+          }
+       }
+    }
+    ```
+
+#### Documents
+The `Documents.vue` takes the following parameters:
+- `id` - number, the id of the commentable model | (required)
+- `type` - string, the commentable model alias you set at the installation step #3 | (required)
+- `open` - boolean, flag that makes the component start collapsed (default) or open | default false | (optional)
+- `title` - string, title for the component | default `Comments` | (optional)
+
+#### FileUploader
+The `FileUploader.vue` takes the following parameters:
+
+- `multiple` - boolean, flag for the single/multiple selection of files | default false | (optional)
+- `url` - string, the url to post the uploaded file(s) to | required
+- `file-size-limit` - number, the maximum file size limit | default `8388608` | (optional)
+
+And emits the following events:
+
+- `upload-start` - emitted before the beginning of the upload
+- `upload-successful` - emitted after a successful upload 
+- `upload-error` - emitted in case of an upload error
+
+
+#### NProgress
+On init, the component adds itself to the Axios `request` & `response` interceptors, as well as to the `beforeEach` & `afterEach` interceptors of VueRouter so it starts and stops without manual intervention.
+
+The `NProgress.vue` listens to the following, self-descriptive, events:
+- `nprogress-add-request`
+- `nprogress-add-response`
+- `nprogress-done`
+
+#### RoleManager
+The two Rolemanager related components are meant to be used together with the package, they're integrated in [Core](https://github.com/laravel-enso/Core) and are not designed to be used standalone. 
+
+#### Select
+In order to work the component needs a data source. The data source can be either an ajax for server-side, OR a formatted array.
+In conclusion the component requires one of the two options `route` or `options` presented below:
+
+The `VueSelect.vue` takes the following parameters:
+
+- `source` - string, only for server-side. The route suffix for your controller, getOptionList will be added under the hood. | (required for server-side operation) 
+- `options` - object, only where you don't need server-side. Is usually an Object built with the `buildSelectList` method from the `SelectListBuilder` trait | (required for non server-side operaiton)
+- `name` - string, the name of the input | (optional)
+- `multiple` - boolean, flag for operation as multi-select | default false | (optional)
+- `selected` - string/number/array, the selected option | default null | (optional)
+- `placeholder` - string, custom placeholder when no option in selected | (optional)
+- `params` - object, list of parameters from the same table, format: `params: { 'fieldName': 'fieldValue' }` | (optional)
+- `pivot-params` - object, list of pivot tables, format: `pivotParams: { 'table': null }` | (optional)
+- `custom-params` - object, using customParams implies that you rewrite the 'getOptionList' method from the `SelectListBuilder` trait. You must use the static::buildSelectList method in order to format the query result in the expected format | (optional)
+
+#### FormBuilder
+The `VueForm.vue` components takes the following, required, parameter:
+- `data`, object, which is FormBuilder generated object that give the component the necessary information in order to draw itself.
+
+The `VueFormCard.vue` component takes the same parameter as `VueForm.vue`.
+
+The distinction between the two is that `VueFormCard` is rendered inside a card wrapper component, and is more suitable for using as the only component in the page.
+
+`VueForm` is outside of any wrapper, and may be integrated together with other more complex pages, or inside other components, such as the modal. 
+
+### Publishes
+
+- `php artisan vendor:publish --tag=vue-components` - the main VueJS components and their dependencies
+- `php artisan vendor:publish --tag=enso-assets` - a common alias for when wanting to update the VueJS assets,
+once a newer version is released, can be used with the `--force` flag
+
+### Notes
+
+The [Laravel Enso Core](https://github.com/laravel-enso/Core) package comes with this package included.
 
 
 <!--h-->
