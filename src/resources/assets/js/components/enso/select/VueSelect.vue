@@ -196,7 +196,7 @@
             processOptions(response) {
                 this.optionList = response.data;
 
-                if (!this.query && !this.valueIsMatched) {
+                if (!this.query && !this.valueIsMatched()) {
                     this.clear();
                 }
             },
