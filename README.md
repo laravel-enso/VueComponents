@@ -168,6 +168,7 @@ The `FileUploader.vue` takes the following parameters:
 - `multiple` - boolean, flag for the single/multiple selection of files | default false | (optional)
 - `url` - string, the url to post the uploaded file(s) to | required
 - `file-size-limit` - number, the maximum file size limit | default `8388608` | (optional)
+- `params` - parameters object that gets passed to the backend, may be used when processing the upload | (optional)
 
 And emits the following events:
 
