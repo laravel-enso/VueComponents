@@ -5,7 +5,8 @@
         :icon="icon"
         @refresh="getData"
         :overlay="loading"
-        :controls="1">
+        :controls="1"
+        :removable="removable">
         <a slot="control-1"
             class="card-header-icon">
             <button class="button is-small is-primary is-outlined"
@@ -68,6 +69,10 @@ export default {
         id: {
             type: String,
             default: null,
+        },
+        removable: {
+            type: Boolean,
+            default: false,
         },
         customRender: {
             type: Function,
