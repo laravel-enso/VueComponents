@@ -72,7 +72,7 @@ export default {
         },
         removable: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         customRender: {
             type: Function,
