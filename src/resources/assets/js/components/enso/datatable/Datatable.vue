@@ -6,7 +6,8 @@
         @refresh="getData"
         :overlay="loading"
         :controls="1"
-        :removable="removable">
+        :removable="removable"
+        @remove="destroy()">
         <a slot="control-1"
             class="card-header-icon">
             <button class="button is-small is-primary is-outlined"
@@ -574,6 +575,9 @@ export default {
                 intervalFilters: JSON.stringify(this.intervalFilters),
                 customParams: JSON.stringify(this.customParams),
             };
+        },
+        destroy() {
+            this.$destroy();
         },
     },
 
