@@ -53,6 +53,7 @@
 
 <script>
 
+import { debounce } from 'lodash';
 import { mapGetters, mapState } from 'vuex';
 import Card from '../bulma/Card.vue';
 import Modal from '../bulma/Modal.vue';
@@ -256,7 +257,7 @@ export default {
     },
 
     created() {
-        this.getData = _.debounce(this.getData, 500);
+        this.getData = debounce(this.getData, 500);
     },
 
     methods: {
