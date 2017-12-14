@@ -214,6 +214,49 @@ The distinction between the two is that `VueFormCard` is rendered inside a card 
 
 `VueForm` is outside of any wrapper, and may be integrated together with other more complex pages, or inside other components, such as the modal. 
 
+### Vue Filter
+Takes the following parameters:
+- `value` - anything, the default, starting value | required
+- `title` - string, the text for the box title. Defaults to null.
+- `options` - array, the list of options to display. Defaults to empty array
+- `offSwitch` - boolean, flag that determines if an off switch is rendered. Defaults to `true`
+
+To use it include it in the page:
+```
+<vue-filter
+        title="Taxes Paid"
+        v-model="filters.orders.paid_taxes"
+        :options="vueFilterOptions">
+</vue-filter>
+```
+
+where the `vueFilterOptions` and `filters` may be something like:
+
+```
+vueFilterOptions: [
+    {value:true, label:"Yes"},
+    {value:false, label:"No"}
+],
+filters: {
+    orders: {                
+        paid_taxes: '',                
+    }
+},
+```
+
+Next, when defining your DataTable, make sure you give it your filters:
+
+```
+<data-table 
+    source="orders" 
+    :extra-filters="filters" 
+    id="index-orders-id">
+</data-table>
+```
+
+Note that you may use more than one such filter, just bind it inside the same encompassing `filters` object 
+and it will get passed to the datatables BE logic.  
+
 ### Publishes
 
 - `php artisan vendor:publish --tag=vue-components` - the main VueJS components and their dependencies
