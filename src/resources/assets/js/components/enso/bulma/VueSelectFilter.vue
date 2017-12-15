@@ -7,6 +7,11 @@
         <vue-select
             :options=options
             :value=internalValue
+            :source=source
+            :params=params
+            :pivotParams=pivotParams
+            :customParams=customParams
+            :placeholder=placeholder
             @input=update>
         </vue-select> 
     </div>
@@ -15,7 +20,6 @@
 
 <script>
 
-import { mapGetters } from 'vuex';
 import VueSelect from '../select/VueSelect.vue';
 
 export default {
@@ -35,10 +39,26 @@ export default {
         value: {
             required: true,
         },
-    },
-
-    computed: {
-        ...mapGetters('locale', ['__']),
+        source: {
+            type: String,
+            default: null,
+        },
+        params: {
+            type: Object,
+            default: null,
+        },
+        pivotParams: {
+            type: Object,
+            default: null,
+        },
+        customParams: {
+            type: Object,
+            default: null,
+        },
+        placeholder: {
+            type: String,
+            default: 'Please choose',
+        },
     },
 
     data() {
