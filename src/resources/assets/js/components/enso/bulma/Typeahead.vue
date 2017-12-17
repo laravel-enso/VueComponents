@@ -1,9 +1,9 @@
 <template>
 
-    <div class="field">
+    <div>
         <div class="control has-icons-left"
-            :class="{ 'has-icons-right is-loading': loading }">
-            <input class="input" type="search"
+            :class="{ 'is-loading': loading }">
+            <input class="input" type="text"
                 :class="{ 'is-danger': hasError }"
                 :disabled="disabled"
                 :placeholder="placeholder"
@@ -69,10 +69,14 @@ export default {
             type: String,
             default: 'What are you searching for today?',
         },
+        validator: {
+            type: Boolean,
+            default: false,
+        },
         regExp: {
             type: RegExp,
             default() {
-                return /^[A-Za-z0-9 _-]*[A-Za-z0-9][A-Za-z0-9 _-]*$/;
+                return /^[A-Za-z0-9 _-]*[A-Za-z0-9 _-]*$/;
             },
         },
         value: {
@@ -83,7 +87,7 @@ export default {
 
     computed: {
         hasError() {
-            return this.value && !this.regExp.test(this.value);
+            return this.validator && this.value && !this.regExp.test(this.value);
         },
         showDropdown() {
             return !this.hideDropdown && this.value && !this.hasError && this.items.length > 0;
@@ -140,7 +144,7 @@ export default {
         },
         getParams() {
             return {
-                value: this.value,
+                query: this.value,
                 length: this.length,
                 params: this.params,
             };
@@ -174,11 +178,17 @@ export default {
 
     .dropdown.typeahead {
         width: 100%;
+        z-index: 19;
+        position:absolute;
 
         .dropdown-menu {
             width: 100%;
+
+            .dropdown-content a.dropdown-item {
+                text-overflow: ellipsis;
+                overflow-x: hidden;
+            }
         }
     }
 
 </style>
-
