@@ -179,7 +179,6 @@ export default {
 
     .dropdown.typeahead {
         width: 100%;
-        z-index: 19;
         position:absolute;
 
         .dropdown-menu {
