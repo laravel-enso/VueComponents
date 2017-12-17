@@ -150,6 +150,7 @@ export default {
             };
         },
         update(value) {
+            this.$emit('selected', this.items[this.position]);
             this.$emit('input', value);
         },
         hit() {
