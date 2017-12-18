@@ -207,12 +207,16 @@ The `VueSelect.vue` takes the following parameters:
 #### FormBuilder
 The `VueForm.vue` components takes the following, required, parameter:
 - `data`, object, which is FormBuilder generated object that give the component the necessary information in order to draw itself.
+- `params`, object, is a parameters object that, when given, is being sent with all the requests | default null | (optional) 
+May be used on the back end for extra logic/features when required. 
 
 The `VueFormCard.vue` component takes the same parameter as `VueForm.vue`.
 
 The distinction between the two is that `VueFormCard` is rendered inside a card wrapper component, and is more suitable for using as the only component in the page.
 
-`VueForm` is outside of any wrapper, and may be integrated together with other more complex pages, or inside other components, such as the modal. 
+`VueForm` is outside of any wrapper, and may be integrated together with other more complex pages, or inside other components, such as the modal.
+
+Note: when creating a resource and no redirect is given in the POST response, the form does not perform a redirect. 
 
 ### Vue Filter
 Takes the following parameters:
