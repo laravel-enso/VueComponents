@@ -131,7 +131,7 @@
         methods: {
 
             getEditForm(address) {
-                axios.get('/api/addresses/' + address.id + '/edit').then(response => {
+                axios.get(route('addresses.edit', address.id, false)).then(response => {
                     this.$emit('form-loaded', response.data);
                     this.form = response.data.editForm;
                 }).catch( error => {
@@ -140,7 +140,7 @@
             },
             getCreateForm() {
                 const params = {addressable_id: this.id, addressable_type: this.type};
-                axios.get('/api/addresses/create', {params: params}).then(response => {
+                axios.get(route('addresses.create', params, false)).then(response => {
                     this.form = response.data.createForm;
                 }).catch( error => {
                     this.handleError(error);
@@ -156,7 +156,7 @@
             get() {
                 this.loading = true;
 
-                axios.get('/api/addresses/list', { params: { id: this.id, type: this.type } }).then(response => {
+                axios.get(route('addresses.list', { id: this.id, type: this.type }, false)).then(response => {
                     this.addresses = response.data;
                     this.loading = false;
                 }).catch(error => {
@@ -174,7 +174,7 @@
             },
             destroy(payload) {
 
-                axios.delete('/api/addresses/' + payload.id).then(response => {
+                axios.delete(route('addresses.destroy', payload.id, false)).then(response => {
                     this.$parent.loading = false;
                     this.addresses.splice(payload.index,1);
                 }).catch(error => {

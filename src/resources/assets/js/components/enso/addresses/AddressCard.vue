@@ -90,7 +90,7 @@
         methods: {
 
             setDefault() {
-                axios.get('/api/addresses/setDefault/' + this.address.id).then(response => {
+                axios.get(route('addresses.setDefault', this.address.id, false)).then(response => {
                     this.$emit('default-set', response.data.message);
                 }).catch((error) => {
                     this.reportEnsoException(error);
