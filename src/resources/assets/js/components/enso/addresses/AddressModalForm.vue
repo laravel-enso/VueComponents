@@ -3,18 +3,29 @@
         <div class="modal is-active">
             <div class="modal-background"></div>
             <div class="modal-content" style="width:80%">
-                    <div class="box">
-                        <span class="icon is-pulled-right">
-                          <i class="fa fa-times close-button" @click="$emit('form-close')"></i>
-                        </span>
+                <div class="box">
+                    <span class="icon is-pulled-right">
+                      <i class="fa fa-times close-button" @click="$emit('form-close')"></i>
+                    </span>
 
-                        <vue-form class="box"
-                            :data="form"
-                            :params="params"
-                            v-on="$listeners">
+                    <vue-form class="box"
+                        :data="form"
+                        :params="params"
+                        v-on="$listeners">
+                            <template
+                                v-for="field in form.fields"
+                                v-if="field.meta.custom"
+                                :slot="field.column"
+                                slot-scope="props">
+                                    <slot
+                                        :name="props.field.column"
+                                        :field="props.field"
+                                        :errors="props.errors">
+                                    </slot>
+                            </template>
 
-                        </vue-form>
-                    </div>
+                    </vue-form>
+                </div>
             </div>
             <button class="modal-close is-large" aria-label="close"></button>
         </div>

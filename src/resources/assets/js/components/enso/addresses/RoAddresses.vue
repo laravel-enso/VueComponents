@@ -7,21 +7,20 @@
 
         <!--customized card content-->
         <template slot="address-template" slot-scope="props">
+            <span v-if="props.address.street_type">{{props.address.street_type}}</span>
+            <span v-if="props.address.street">{{props.address.street}}</span>
+            <span v-if="props.address.number">{{__('Number')}}: {{ props.address.number }}</span>
             <br>
-            <span v-if="props.address.street">{{labels.street}}: </span>
-            <span v-if="props.address.number">{{labels.number}}: {{ props.address.number }}</span>
+            <span v-if="props.address.building">{{__('Building')}}: {{ props.address.building }}</span>
+            <span v-if="props.address.entry">{{__('Entry')}}: {{ props.address.entry }}</span>
+            <span v-if="props.address.floor">{{__('Floor')}}: {{ props.address.floor }}</span>
+            <span v-if="props.address.apartment">{{__('Apartment')}}: {{ props.address.apartment }}</span>
             <br>
-
-            <span v-if="props.address.building">{{labels.building}}: {{ props.address.building }}</span>
-            <span v-if="props.address.entry">{{labels.entry}}: {{ props.address.entry }}</span>
-            <span v-if="props.address.floor">{{labels.floor}}: {{ props.address.floor }}</span>
-            <span v-if="props.address.apartment">{{labels.apartment}}: {{ props.address.apartment }}</span>
+            <span v-if="props.address.sub_administrative_area">{{__('Neighborhood')}}: {{ props.address.sub_administrative_area }}</span>
+            <span v-if="props.address.city">{{ props.address.city }},</span>
+            <span v-if="props.address.administrative_area">{{ props.address.administrative_area }}</span>
             <br>
-            <span v-if="props.address.sub_administrative_area">{{labels.neighborhood}}: {{ props.address.sub_administrative_area }}</span>
-            <span v-if="props.address.city">{{labels.locality}}: {{ props.address.city }}</span>
-            <br>
-            <span v-if="props.address.postal_area">{{labels.postalArea}}: {{ props.address.postal_area }}</span>
-            <span v-if="props.address.administrative_area">{{labels.county}}: {{ props.address.administrative_area }}</span>
+            <span v-if="props.address.postal_area">{{ props.address.postal_area }}</span>
             <br>
             {{ props.address.country_name }} <br>
             <i class="fa fa-sticky-note "></i> {{ props.address.obs }} <br>
@@ -30,17 +29,17 @@
         <!--custom form elements-->
         <template slot="county_id" slot-scope="props">
             <vue-select name="county_id"
-                        v-model="props.element.value"
-                        @input="params.county_id=$event;props.errors.clear(props.element.column);"
-                        :options="props.element.config.options">
+                        v-model="props.field.value"
+                        @input="params.county_id=$event;props.errors.clear(props.field.column);"
+                        :options="props.field.meta.options">
             </vue-select>
         </template>
         <template slot="locality_id" slot-scope="props">
             <vue-select name="locality_id"
                         :params="params"
-                        v-model="props.element.value"
-                        @input="props.errors.clear(props.element.column);"
-                        :source="props.element.config.source">
+                        v-model="props.field.value"
+                        @input="props.errors.clear(props.field.column);"
+                        :source="props.field.meta.source">
             </vue-select>
         </template>
     </addresses>
@@ -48,21 +47,25 @@
 </template>
 <script>
 
+    import { mapGetters } from 'vuex';
     import Addresses from './Addresses';
+    import VueSelect from '../select/VueSelect';
 
     export default {
-        components: {Addresses},
+        components: {Addresses, VueSelect},
         data() {
             return {
-                labels: Store.labels,
                 params: {
                     county_id: null
                 }
             };
         },
+        computed: {
+            ...mapGetters('locale', ['__']),
+        },
         methods: {
             getCountyId(formData) {
-                let attribute = formData.attributes.find(attribute => {
+                let attribute = formData.editForm.fields.find(attribute => {
                     return attribute.column === 'county_id';
                 });
 

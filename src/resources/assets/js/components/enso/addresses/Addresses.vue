@@ -54,18 +54,16 @@
 
                 <!--form customization elements passthrough-->
                 <template
-                    v-for="element in form.fields"
-                    v-if="element.config.custom"
-                    :slot="element.column"
+                    v-for="field in form.fields"
+                    v-if="field.meta.custom"
+                    :slot="field.column"
                     slot-scope="props">
                         <slot
-                                :name="props.element.column"
-                                :element="props.element"
-                                :errors="props.errors">
+                            :name="props.field.column"
+                            :field="props.field"
+                            :errors="props.errors">
                         </slot>
                 </template>
-
-
         </address-modal-form>
     </card>
 
