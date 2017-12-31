@@ -21,7 +21,6 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 - NProgress component, for showing load progress
 - RoleManager components, for the [RoleManager](https://github.com/laravel-enso/RoleManager) package
 - Select component, for the [Select](https://github.com/laravel-enso/Select) package
-- VueForms components, for the [FormBuilder](https://github.com/laravel-enso/FormBuilder) package
 
 #### Bulma
 - `Card`, a multi purpose container
@@ -31,6 +30,7 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 - `Paginate`, a simple to use and powerful pagination module
 - `Tabs`, a tab component
 - `VueFilter`, a single option filtering component, that can be used in conjunction with datatables or anywhere else you need it 
+- `VueSelectFilter`, a select option filtering component
 
 ##### Card
 - `open`, boolean, flag for the initial state of the card | default `true` | (optional)
@@ -230,14 +230,14 @@ To use it include it in the page:
 <vue-filter
         title="Taxes Paid"
         v-model="filters.orders.paid_taxes"
-        :options="vueFilterOptions">
+        :options="options">
 </vue-filter>
 ```
 
-where the `vueFilterOptions` and `filters` may be something like:
+where the `options` and `filters` may be something like:
 
 ```
-vueFilterOptions: [
+options: [
     {value:true, label:"Yes"},
     {value:false, label:"No"}
 ],
@@ -251,11 +251,11 @@ filters: {
 Next, when defining your DataTable, make sure you give it your filters:
 
 ```
-<data-table 
+<vue-table 
     source="orders" 
     :extra-filters="filters" 
     id="index-orders-id">
-</data-table>
+</vue-table>
 ```
 
 Note that you may use more than one such filter, just bind it inside the same encompassing `filters` object 
