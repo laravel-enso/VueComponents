@@ -2,22 +2,21 @@
     <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div class="modal is-active">
             <div class="modal-background"></div>
-            <div class="modal-content" style="width:80%">
-                <div class="box">
-                    <span class="icon is-pulled-right">
-                      <i class="fa fa-times close-button" @click="close"></i>
-                    </span>
+            <div class="modal-content">
 
-                    <vue-form
-                            @destroy="$emit('destroy')"
-                            @submit="$emit('submit')"
-                            v-if="form"
-                            class="box"
-                            :params="params"
-                            :data="form">
-                    </vue-form>
+                <span class="icon is-pulled-right">
+                  <i class="fa fa-times close-button" @click="close"></i>
+                </span>
 
-                </div>
+                <vue-form
+                        @destroy="$emit('destroy')"
+                        @submit="$emit('submit')"
+                        v-if="form"
+                        class="box"
+                        :params="params"
+                        :data="form">
+                </vue-form>
+
             </div>
             <button class="modal-close is-large" aria-label="close"></button>
         </div>
@@ -107,5 +106,9 @@ export default {
 
     .modal.is-active {
         z-index: 1100;
+    }
+
+    .modal-content {
+        width: 80%;
     }
 </style>
