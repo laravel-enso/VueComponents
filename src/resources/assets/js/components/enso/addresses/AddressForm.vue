@@ -30,16 +30,11 @@
 
 <script>
 
-import { mapGetters } from 'vuex';
 import VueForm from '../vueforms/VueForm.vue';
 
 export default {
     components: { VueForm },
     props: {
-        form: {
-            type: Object,
-            default: null,
-        },
         id: {
             type: Number,
             required: true,
@@ -48,10 +43,13 @@ export default {
             type: String,
             required: true,
         },
+        form: {
+            type: Object,
+            default: null,
+        },
     },
 
     computed: {
-        ...mapGetters('locale', ['__']),
         params() {
             return {
                 id: this.id,

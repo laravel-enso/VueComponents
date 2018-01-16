@@ -35,10 +35,11 @@
                 </div>
             </div>
         </div>
-        <address-form v-if="form"
-            :form="form"
-            :type="type"
+        <address-form
+            v-if="form"
             :id="id"
+            :type="type"
+            :form="form"
             @form-close="form=null"
             @destroy="get();form=null"
             @submit="get();form=null">
