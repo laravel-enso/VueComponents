@@ -14,9 +14,9 @@
                     v-on="$listeners">
                     <template v-for="field in form.fields"
                         v-if="field.meta.custom"
-                        :slot="field.column"
+                        :slot="field.name"
                         slot-scope="props">
-                        <slot :name="props.field.column"
+                        <slot :name="props.field.name"
                             :field="props.field"
                             :errors="props.errors">
                         </slot>
