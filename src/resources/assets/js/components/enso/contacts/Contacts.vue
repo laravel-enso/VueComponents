@@ -1,0 +1,161 @@
+<template>
+
+    <card icon="fa fa-address-card-o"
+        refresh search
+        :title="title || __('Contacts')"
+        :overlay="loading"
+        @refresh="get()"
+        :open="open"
+        ref="card"
+        @query-update="query = $event"
+        :badge="contacts.length"
+        :controls="1">
+        <a slot="control-1" class="card-header-icon">
+            <span class="icon is-small"
+                @click="create()">
+                <i class="fa fa-plus-square"></i>
+            </span>
+        </a>
+        <div class="has-padding-medium contacts-wrapper">
+            <div class="columns is-multiline">
+                <contact-form
+                        v-if="form"
+                        :id="id"
+                        :type="type"
+                        :form="form"
+                        @form-close="form=false"
+                        @destroy="get(); form=false"
+                        @submit="get();form=false">
+                </contact-form>
+
+                <contact v-for="(contact, index) in filteredContacts"
+                    class="column is-half-tablet is-one-third-widescreen"
+                    :key="index"
+                    :contact="contact"
+                     @edit="edit(contact)"
+                     @delete="destroy(contact, index)"
+                    :index="index"
+                    :type="type"
+                    :id="id">
+                </contact>
+            </div>
+        </div>
+    </card>
+
+</template>
+
+<script>
+
+import { mapGetters } from 'vuex';
+import Card from '../bulma/Card.vue';
+import Contact from './Contact.vue';
+import ContactForm from './ContactForm.vue';
+
+export default {
+    name: 'Contacts',
+
+    components: { Card, Contact, ContactForm },
+
+    props: {
+        id: {
+            type: Number,
+            required: true,
+        },
+        type: {
+            type: String,
+            required: true,
+        },
+        open: {
+            type: Boolean,
+            default: false,
+        },
+        title: {
+            type: String,
+            default: null,
+        },
+    },
+
+    computed: {
+        ...mapGetters('locale', ['__']),
+        filteredContacts() {
+            return this.query
+                ? this.contacts.filter(contact => contact.first_name.toLowerCase()
+                    .indexOf(this.query.toLowerCase()) > -1
+                    || contact.last_name.toLowerCase().indexOf(this.query.toLowerCase()) > -1)
+                : this.contacts;
+        },
+    },
+
+    data() {
+        return {
+            loading: false,
+            query: '',
+            contacts: [],
+            form: null,
+        };
+    },
+
+    methods: {
+        get() {
+            this.loading = true;
+            axios.get(route('core.contacts.list', { id: this.id, type: this.type }, false)).then((response) => {
+                this.contacts = response.data;
+                this.loading = false;
+            }).catch((error) => {
+                this.loading = false;
+                this.handleError(error);
+            });
+        },
+        destroy(contact, index) {
+            this.loading = true;
+            axios.delete(route('core.contacts.destroy', contact.id, false)).then(() => {
+                this.contacts.splice(index, 1);
+                this.loading = false;
+            }).catch((error) => {
+                this.loading = false;
+                this.handleError(error);
+            });
+        },
+        edit(contact) {
+            this.loading = true;
+            axios.get(route('core.contacts.edit', contact.id, false)).then(({ data }) => {
+                this.loading = false;
+                this.$emit('form-loaded', data);
+                this.form = data.editForm;
+            }).catch((error) => {
+                this.loading = false;
+                this.handleError(error);
+            });
+        },
+        create() {
+            this.loading = true;
+
+            if (this.$refs.card.collapsed) {
+                this.$refs.card.toggle();
+            }
+
+            const params = { contactable_id: this.id, contactable_type: this.type };
+            axios.get(route('core.contacts.create', params, false)).then(({ data }) => {
+                this.loading = false;
+                this.form = data.createForm;
+            }).catch((error) => {
+                this.loading = false;
+                this.handleError(error);
+            });
+        },
+    },
+
+    created() {
+        this.get();
+    },
+};
+
+</script>
+
+<style>
+
+    .contacts-wrapper {
+        max-height: 415px;
+        overflow-y: auto;
+    }
+</style>
