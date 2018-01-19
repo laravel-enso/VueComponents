@@ -194,7 +194,7 @@ In conclusion the component requires one of the two options `route` or `options`
 
 The `VueSelect.vue` takes the following parameters:
 
-- `source` - string, only for server-side. The route suffix for your controller, getOptionList will be added under the hood. | (required for server-side operation) 
+- `source` - string, only for server-side. The route suffix for your controller, selectOptions will be added under the hood. | (required for server-side operation) 
 - `options` - object, only where you don't need server-side. Is usually an Object built with the `buildSelectList` method from the `SelectListBuilder` trait | (required for non server-side operaiton)
 - `name` - string, the name of the input | (optional)
 - `multiple` - boolean, flag for operation as multi-select | default false | (optional)
@@ -202,7 +202,7 @@ The `VueSelect.vue` takes the following parameters:
 - `placeholder` - string, custom placeholder when no option in selected | (optional)
 - `params` - object, list of parameters from the same table, format: `params: { 'fieldName': 'fieldValue' }` | (optional)
 - `pivot-params` - object, list of pivot tables, format: `pivotParams: { 'table': null }` | (optional)
-- `custom-params` - object, using customParams implies that you rewrite the 'getOptionList' method from the `SelectListBuilder` trait. You must use the static::buildSelectList method in order to format the query result in the expected format | (optional)
+- `custom-params` - object, using customParams implies that you rewrite the 'selectOptions' method from the `SelectListBuilder` trait. You must use the static::buildSelectList method in order to format the query result in the expected format | (optional)
 
 #### FormBuilder
 The `VueForm.vue` components takes the following, required, parameter:
