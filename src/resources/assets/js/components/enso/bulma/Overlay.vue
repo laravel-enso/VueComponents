@@ -37,6 +37,8 @@ export default {
         return {
             overlayColor: {
                 border: `2px solid ${this.color}`,
+                'border-right-color': 'transparent',
+                'border-top-color': 'transparent',
             },
         };
     },
@@ -65,8 +67,6 @@ export default {
             animation: spinAround 500ms infinite linear;
             border-radius: 50%;
             content: "";
-            border-right-color: transparent;
-            border-top-color: transparent;
 
             &.is-small {
                 height: 1em;
