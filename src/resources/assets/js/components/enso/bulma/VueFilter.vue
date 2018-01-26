@@ -54,7 +54,7 @@ export default {
         },
         offSwitch: {
             type: Boolean,
-            default: false,
+            default: true,
         },
     },
 
