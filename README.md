@@ -90,7 +90,7 @@ Takes the following parameters:
 - `value` -  the selected value from the list of options | (required)
 - `title` - string, the title to display above the options | default null | (optional)
 - `theme` - string, the theme to use for styling the box | default `primary` | (optional)
-- `off-switch` - boolean, flag for showing an off switch | default true | (optional)
+- `hide-off` - boolean, flag for hiding an off switch | default false | (optional)
 
 #### Charts
 The `Chart.vue` component can be used anywhere by integrating it into any other component or page, and takes the following parameters:
@@ -223,7 +223,7 @@ Takes the following parameters:
 - `value` - anything, the default, starting value | required
 - `title` - string, the text for the box title. Defaults to null.
 - `options` - array, the list of options to display. Defaults to empty array
-- `offSwitch` - boolean, flag that determines if an off switch is rendered. Defaults to `true`
+- `hide-off` - boolean, flag that determines if an off button is rendered. Defaults to `false`
 
 To use it include it in the page:
 ```
