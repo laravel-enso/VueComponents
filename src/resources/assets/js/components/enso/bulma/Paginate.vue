@@ -1,54 +1,48 @@
 <template>
 
     <div>
-        <div class="pagination is-small pull-right"
-            :class="{'with-border': border}">
-            <div class="dropdown"
-                :class="{'is-active': open}">
-                <div class="dropdown-trigger">
-                    <a class="pagination-link"
-                        aria-haspopup="true"
-                        aria-controls="dropdown-menu"
-                        @click="open=!open">
+        <div :class="['pagination pull-right', {'with-border': border}]">
+            <div :class="['dropdown', {'is-active': open}]">
+                <dropdown class="is-right">
+                    <span slot="label">
                         <span class="icon is-small has-margin-right-small">
-                            <i class="fa fa-bars"></i>
+                            <fa icon="bars"></fa>
                         </span>
                         {{ pageLength }}
-                        <span class="icon is-small angle"
-                            :aria-hidden="!open">
-                            <i class="fa fa-angle-down"></i>
-                        </span>
+                    </span>
+                    <a v-for="(length, index) in lengths"
+                        :key="index"
+                        class="dropdown-item"
+                        href="#"
+                        :class="{ 'is-active': length == pageLength }"
+                        @click="changeLength(length)">
+                        {{ length }}
                     </a>
-                </div>
-                <div class="dropdown-menu paginate" role="menu">
-                    <div class="dropdown-content has-text-centered">
-                        <a v-for="length in lengths"
-                            class="dropdown-item"
-                            href="#"
-                            :class="{ 'is-active': length == pageLength }"
-                            @click="changeLength(length)">
-                            {{ length }}
-                        </a>
-                    </div>
-                </div>
+                </dropdown>
             </div>
             <a class="pagination-link">
                 <span class="icon is-small has-margin-right-small">
-                    <i class="fa fa-eye"></i>
+                    <fa icon="eye"></fa>
                 </span>
                 {{ start }} -> {{ offset }} / {{ records }}
             </a>
             <a class="pagination-previous"
                 @click="previous">
+                <span class="icon is-small">
+                    <fa icon="angle-left"></fa>
+                </span>
             </a>
             <a class="pagination-link">
                 <span class="icon is-small has-margin-right-small">
-                    <i class="fa fa-file-text-o"></i>
+                    <fa icon="file-alt"></fa>
                 </span>
                  {{ current }} / {{ pages }}
             </a>
             <a class="pagination-next"
-                @click="next">>
+                @click="next">
+                <span class="icon is-small">
+                    <fa icon="angle-right"></fa>
+                </span>
             </a>
         </div>
         <div class="is-clearfix has-margin-bottom-medium"></div>
@@ -60,7 +54,21 @@
 
 <script>
 
+import fontawesome from '@fortawesome/fontawesome';
+import {
+    faBars, faAngleDown, faEye, faAngleLeft, faFileAlt, faAngleRight,
+} from '@fortawesome/fontawesome-free-solid/shakable.es';
+import Dropdown from './Dropdown.vue';
+
+fontawesome.library.add([
+    faBars, faAngleDown, faEye, faAngleLeft, faFileAlt, faAngleRight,
+]);
+
 export default {
+    name: 'Paginate',
+
+    components: { Dropdown },
+
     props: {
         list: {
             type: Array,
@@ -138,25 +146,3 @@ export default {
 };
 
 </script>
-
-<style>
-
-    .icon.angle[aria-hidden="true"] {
-        transform: rotate(180deg);
-    }
-
-    .icon.angle {
-        transition: transform .300s ease;
-    }
-
-    .dropdown-menu.paginate {
-        min-width: 50px;
-        width: 65px;
-        left: 5px;
-    }
-
-    .dropdown-menu.paginate > .dropdown-content > a {
-        padding: 0;
-    }
-
-</style>

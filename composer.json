@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LaravelEnso\\VueComponents\\VueComponentsServiceProvider"
+                "LaravelEnso\\VueComponents\\AppServiceProvider"
             ],
             "aliases": {}
         }

@@ -21,7 +21,6 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 - NProgress component, for showing load progress
 - RoleManager components, for the [RoleManager](https://github.com/laravel-enso/RoleManager) package
 - Select component, for the [Select](https://github.com/laravel-enso/Select) package
-- VueForms components, for the [FormBuilder](https://github.com/laravel-enso/FormBuilder) package
 
 #### Bulma
 - `Card`, a multi purpose container
@@ -31,6 +30,7 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 - `Paginate`, a simple to use and powerful pagination module
 - `Tabs`, a tab component
 - `VueFilter`, a single option filtering component, that can be used in conjunction with datatables or anywhere else you need it 
+- `VueSelectFilter`, a select option filtering component
 
 ##### Card
 - `open`, boolean, flag for the initial state of the card | default `true` | (optional)
@@ -194,7 +194,7 @@ In conclusion the component requires one of the two options `route` or `options`
 
 The `VueSelect.vue` takes the following parameters:
 
-- `source` - string, only for server-side. The route suffix for your controller, getOptionList will be added under the hood. | (required for server-side operation) 
+- `source` - string, only for server-side. The route suffix for your controller, selectOptions will be added under the hood. | (required for server-side operation) 
 - `options` - object, only where you don't need server-side. Is usually an Object built with the `buildSelectList` method from the `SelectListBuilder` trait | (required for non server-side operaiton)
 - `name` - string, the name of the input | (optional)
 - `multiple` - boolean, flag for operation as multi-select | default false | (optional)
@@ -202,17 +202,64 @@ The `VueSelect.vue` takes the following parameters:
 - `placeholder` - string, custom placeholder when no option in selected | (optional)
 - `params` - object, list of parameters from the same table, format: `params: { 'fieldName': 'fieldValue' }` | (optional)
 - `pivot-params` - object, list of pivot tables, format: `pivotParams: { 'table': null }` | (optional)
-- `custom-params` - object, using customParams implies that you rewrite the 'getOptionList' method from the `SelectListBuilder` trait. You must use the static::buildSelectList method in order to format the query result in the expected format | (optional)
+- `custom-params` - object, using customParams implies that you rewrite the 'selectOptions' method from the `SelectListBuilder` trait. You must use the static::buildSelectList method in order to format the query result in the expected format | (optional)
 
 #### FormBuilder
 The `VueForm.vue` components takes the following, required, parameter:
 - `data`, object, which is FormBuilder generated object that give the component the necessary information in order to draw itself.
+- `params`, object, is a parameters object that, when given, is being sent with all the requests | default null | (optional) 
+May be used on the back end for extra logic/features when required. 
 
 The `VueFormCard.vue` component takes the same parameter as `VueForm.vue`.
 
 The distinction between the two is that `VueFormCard` is rendered inside a card wrapper component, and is more suitable for using as the only component in the page.
 
-`VueForm` is outside of any wrapper, and may be integrated together with other more complex pages, or inside other components, such as the modal. 
+`VueForm` is outside of any wrapper, and may be integrated together with other more complex pages, or inside other components, such as the modal.
+
+Note: when creating a resource and no redirect is given in the POST response, the form does not perform a redirect. 
+
+### Vue Filter
+Takes the following parameters:
+- `value` - anything, the default, starting value | required
+- `title` - string, the text for the box title. Defaults to null.
+- `options` - array, the list of options to display. Defaults to empty array
+- `offSwitch` - boolean, flag that determines if an off switch is rendered. Defaults to `true`
+
+To use it include it in the page:
+```
+<vue-filter
+        title="Taxes Paid"
+        v-model="filters.orders.paid_taxes"
+        :options="options">
+</vue-filter>
+```
+
+where the `options` and `filters` may be something like:
+
+```
+options: [
+    {value:true, label:"Yes"},
+    {value:false, label:"No"}
+],
+filters: {
+    orders: {                
+        paid_taxes: '',                
+    }
+},
+```
+
+Next, when defining your DataTable, make sure you give it your filters:
+
+```
+<vue-table 
+    source="orders" 
+    :extra-filters="filters" 
+    id="index-orders-id">
+</vue-table>
+```
+
+Note that you may use more than one such filter, just bind it inside the same encompassing `filters` object 
+and it will get passed to the datatables BE logic.  
 
 ### Publishes
 

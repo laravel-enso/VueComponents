@@ -1,10 +1,10 @@
 <template>
 
-	<div class="overlay is-overlay"
-		:class="{ 'opacity': opacity }">
+    <div class="overlay is-overlay"
+        :class="{ 'is-opaque': !transparent }">
         <div class="overlay-loader"
-        	:style="overlayColor"
-        	:class="loaderSize">
+            :style="overlayColor"
+            :class="loaderSize">
         </div>
     </div>
 
@@ -13,6 +13,7 @@
 <script>
 
 export default {
+    name: 'Overlay',
 
     props: {
         size: {
@@ -22,13 +23,13 @@ export default {
                 return ['small', 'medium', 'large'].includes(value);
             },
         },
-        opacity: {
+        transparent: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         color: {
             type: String,
-            default: '#00d1b2',
+            default: '#f44336',
         },
     },
 
@@ -51,36 +52,37 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss" scoped>
 
-	.opacity {
-		background: rgba(255, 255, 255, 0.4);
+    .is-opaque {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    .overlay.is-overlay {
         display: flex;
+
+        .overlay-loader {
+            margin: auto;
+            -webkit-animation: spinAround 500ms infinite linear;
+            animation: spinAround 500ms infinite linear;
+            border-radius: 50%;
+            content: "";
+
+            &.is-small {
+                height: 1em;
+                width: 1em;
+            }
+
+            &.is-medium {
+                width: 2em;
+                height: 2em;
+            }
+
+            &.is-large {
+                width: 3em;
+                height: 3em;
+            }
+        }
     }
-
-    div.overlay > .overlay-loader {
-        margin: auto;
-    }
-
-    .overlay-loader {
-		-webkit-animation: spinAround 500ms infinite linear;
-		      animation: spinAround 500ms infinite linear;
-		border-radius: 290486px;
-		content: "";
-		display: block;
-		height: 1em;
-		position: relative;
-		width: 1em;
-	}
-
-	.overlay-loader.is-medium {
-		width: 2em;
-		height: 2em;
-	}
-
-	.overlay-loader.is-large {
-		width: 3em;
-		height: 3em;
-	}
 
 </style>

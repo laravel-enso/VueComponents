@@ -7,12 +7,13 @@
                 <input :multiple="multiple"
                     class="file-input hidden"
                     type="file"
+                    ref="input"
                     @change="upload">
                     <slot name="upload-button"
                         :open-file-browser="openFileBrowser"
                         @click="openFileBrowser">
                         <a class="icon is-small">
-                            <i class="fa fa-upload"></i>
+                            <fa icon="upload"></fa>
                         </a>
                     </slot>
             </label>
@@ -22,6 +23,11 @@
 </template>
 
 <script>
+
+import fontawesome from '@fortawesome/fontawesome';
+import { faUpload } from '@fortawesome/fontawesome-free-solid/shakable.es';
+
+fontawesome.library.add(faUpload);
 
 export default {
     props: {
@@ -53,23 +59,23 @@ export default {
 
     methods: {
         openFileBrowser() {
-            this.input.click();
+            this.$refs.input.click();
         },
         upload() {
             this.$emit('upload-start');
             this.setFormData();
 
             axios.post(this.url, this.formData).then((response) => {
-                this.resetForm();
+                this.reset();
                 this.$emit('upload-successful', response.data);
             }).catch((error) => {
-                this.resetForm();
+                this.reset();
                 this.$emit('upload-error');
                 this.handleError(error);
             });
         },
         setFormData() {
-            const { files } = this.input;
+            const { files } = this.$refs.input;
             this.addFiles(files);
             this.addParams();
         },
@@ -93,19 +99,16 @@ export default {
         },
         sizeCheckPasses(file) {
             if (file.size > this.fileSizeLimit) {
-                toastr.warning(`File size Limit of ${this.fileSizeLimit} Kb excedeed by ${file.name}`);
+                this.$toastr.warning(`File size Limit of ${this.fileSizeLimit} Kb excedeed by ${file.name}`);
                 return false;
             }
 
             return true;
         },
-        resetForm() {
+        reset() {
             this.$el.reset();
+            this.formData = new FormData();
         },
-    },
-
-    mounted() {
-        this.input = this.$el.querySelector('input');
     },
 };
 

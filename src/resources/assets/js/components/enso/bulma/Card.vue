@@ -6,68 +6,64 @@
             <p class="card-header-title">
                 <span class="icon is-small has-margin-right-small"
                     v-if="icon">
-                    <i :class="icon"></i>
+                    <fa :icon="icon"></fa>
                 </span>
                 <span class="is-clickable"
                     @click="toggle()"
-                    v-if="collapsible">
+                    v-if="!fixed && title">
                     {{ title }}
                 </span>
-                <span v-else>{{ title }}</span>
+                <span v-else-if="title">{{ title }}</span>
             </p>
             <div class="has-vertically-centered-content"
                 v-if="search">
                 <p class="control has-icons-left">
-                <input type="search"
-                    class="input is-small"
-                    v-model="query"
-                    @input="$emit('query-update', query)">
-                <span class="icon is-small is-left">
-                    <i class="fa fa-search"></i>
-                </span>
+                    <input type="search"
+                        class="input is-small"
+                        v-model="query"
+                        @input="$emit('query-update', query)">
+                    <span class="icon is-small is-left">
+                        <fa icon="search"></fa>
+                    </span>
                 </p>
             </div>
             <slot v-for="i in controls"
                 :name="'control-' + i">
             </slot>
-            <a class="card-header-icon"
+            <card-control
                 v-if="badge !== null">
-                <span class="tag is-primary">
+                <span class="tag is-link">
                     {{ badge }}
                 </span>
-            </a>
-            <a class="card-header-icon"
-                v-if="refresh">
-                <span class="icon is-small"
-                    @click="$emit('refresh')">
-                    <i class="fa fa-refresh"></i>
+            </card-control>
+            <card-control
+                v-if="refresh"
+                @click="$emit('refresh')">
+                <span class="icon is-small">
+                    <fa icon="sync"></fa>
                 </span>
-            </a>
-            <a class="card-header-icon"
-                v-if="collapsible">
+            </card-control>
+            <card-control
+                v-if="!fixed"
+                @click="toggle()">
                 <span class="icon angle"
-                    :aria-hidden="collapsed"
-                    @click="toggle()">
-                    <i class="fa fa-angle-down"></i>
+                    :aria-hidden="!expanded">
+                    <fa icon="angle-down"></fa>
                 </span>
-            </a>
-            <span class="card-header-icon"
+            </card-control>
+            <card-control
                 v-if="removable"
-                @click="$emit('remove')">
+                @click="destroy()">
                 <a class="delete is-small"></a>
-            </span>
+            </card-control>
         </header>
 
-        <div class="card-content" v-show="!collapsed">
+        <div class="card-content is-paddingless" v-show="expanded">
             <slot></slot>
         </div>
 
-        <footer class="card-footer" v-if="footer && !collapsed">
-            <p v-for="i in footerItems"
-                class="card-footer-item">
-                <slot :name="'footer-item-' + i"></slot>
-            </p>
-        </footer>
+        <slot name="footer"></slot>
+
         <overlay size="medium" v-if="overlay"></overlay>
     </div>
 
@@ -75,33 +71,28 @@
 
 <script>
 
+import fontawesome from '@fortawesome/fontawesome';
+import { faSearch, faSync, faAngleDown } from '@fortawesome/fontawesome-free-solid/shakable.es';
+import CardControl from './CardControl.vue';
 import Overlay from './Overlay.vue';
+
+fontawesome.library.add(faSearch, faSync, faAngleDown);
 
 export default {
     name: 'Card',
 
-    components: { Overlay },
+    components: { CardControl, Overlay },
 
     props: {
-        open: {
-            type: Boolean,
-            default: true,
-        },
-        header: {
-            type: Boolean,
-            default: true,
-        },
-        footer: {
+        collapsed: {
             type: Boolean,
             default: false,
         },
-        footerItems: {
-            type: Number,
-            default: 0,
-        },
         icon: {
-            type: String,
-            default: null,
+            type: Object,
+            default() {
+                return null;
+            },
         },
         title: {
             type: String,
@@ -119,15 +110,11 @@ export default {
             type: Boolean,
             default: false,
         },
-        collapsible: {
+        fixed: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         removable: {
-            type: Boolean,
-            default: true,
-        },
-        overlay: {
             type: Boolean,
             default: false,
         },
@@ -135,11 +122,9 @@ export default {
             type: Number,
             default: 0,
         },
-        bodyStyle: {
-            type: Object,
-            default() {
-                return {};
-            },
+        overlay: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -149,23 +134,36 @@ export default {
                 ? this.$el.querySelector('input[type=search]')
                 : null;
         },
+        header() {
+            return this.icon || this.title || this.search
+                || this.badge || this.refresh || !this.fixed
+                || this.removable || this.controls;
+        },
     },
 
     data() {
         return {
             query: null,
-            collapsed: !this.open,
+            expanded: !this.collapsed,
         };
     },
 
     methods: {
         toggle() {
             this.$emit('toggle');
-            this.collapsed = !this.collapsed;
+            this.expanded = !this.expanded;
 
             return this.collapsed
                 ? this.$emit('collapse')
                 : this.$emit('expand');
+        },
+        expand() {
+            this.expanded = true;
+            this.$emit('expand');
+        },
+        collapse() {
+            this.expanded = false;
+            this.$emit('collapse');
         },
         focus() {
             this.searchInput.focus();
@@ -173,12 +171,17 @@ export default {
         clearQuery() {
             this.query = null;
         },
+        destroy() {
+            this.$emit('remove');
+            this.$el.parentNode.removeChild(this.$el);
+            this.$destroy();
+        },
     },
 };
 
 </script>
 
-<style>
+<style scoped>
 
     .icon.angle[aria-hidden="true"] {
         transform: rotate(180deg);
@@ -186,10 +189,6 @@ export default {
 
     .icon.angle {
         transition: transform .300s ease;
-    }
-
-    .card-content {
-        padding: 0;
     }
 
 </style>

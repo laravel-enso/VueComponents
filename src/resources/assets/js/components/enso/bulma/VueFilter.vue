@@ -4,10 +4,11 @@
         <div class="has-text-centered">
             <b>{{ title }}</b>
         </div>
-        <div class="tabs is-toggle is-fullwidth is-small">
+        <div class="tabs is-toggle is-fullwidth is-small filter-tabs">
             <ul>
                 <li :class="{ 'is-active': option.value === value }"
-                    v-for="option in options">
+                    v-for="(option, index) in options"
+                    :key="index">
                     <a v-html="option.label"
                         @click="update(option.value)">
                     </a>
@@ -16,8 +17,8 @@
                     v-if="offSwitch">
                     <a @click="update(null)">
                         <span class="icon is-small"
-                            :class="{ 'has-text-danger': value === null, 'has-text-success': value !== null }">
-                            <i class="fa fa-power-off"></i>
+                            :class="value === null ? 'has-text-danger' : 'has-text-success'">
+                            <fa icon="power-off"></fa>
                         </span>
                         <span>{{ __('Off') }}</span>
                     </a>
@@ -31,6 +32,10 @@
 <script>
 
 import { mapGetters } from 'vuex';
+import fontawesome from '@fortawesome/fontawesome';
+import { faPowerOff } from '@fortawesome/fontawesome-free-solid/shakable.es';
+
+fontawesome.library.add(faPowerOff);
 
 export default {
     props: {
@@ -49,7 +54,7 @@ export default {
         },
         offSwitch: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     },
 
@@ -72,9 +77,14 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 
-    .box.vue-filter {
+    .vue-filter {
         padding: 0.5rem;
     }
+
+    .filter-tabs {
+        padding-top: 4px;
+    }
+
 </style>
