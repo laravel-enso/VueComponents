@@ -101,7 +101,7 @@ export default {
         padding: 0.5em;
 
         .filter-tabs {
-            padding-top: 4px;
+            padding-top: 0.5em;
 
             .filter-label {
                 font-size: 0.9em;
