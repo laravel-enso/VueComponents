@@ -1,6 +1,7 @@
 <template>
 
     <transition appear
+        :duration="500"
         enter-active-class="fadeIn"
         leave-active-class="fadeOut">
         <div class="animated"
@@ -14,6 +15,7 @@
 <script>
 
 export default {
+    name: 'Tab',
 
     props: {
         id: {

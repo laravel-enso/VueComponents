@@ -25,6 +25,8 @@
 <script>
 
 export default {
+    name: 'Tab',
+
     props: {
         alignment: {
             type: String,
