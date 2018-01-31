@@ -71,13 +71,13 @@ export default {
 
     methods: {
         setActive(index) {
+            if (this.active === index) {
+                return;
+            }
+
             this.active = null;
 
             setTimeout(() => {
-                if (this.active === index) {
-                    return;
-                }
-
                 this.active = index;
             }, 500);
         },
