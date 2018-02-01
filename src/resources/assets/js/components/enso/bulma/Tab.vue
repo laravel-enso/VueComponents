@@ -25,15 +25,21 @@ export default {
     },
 
     computed: {
-        active() {
+        index() {
             return this.$parent.tabs
-                .findIndex(tab => JSON.stringify(tab) === JSON.stringify(this.id))
-                    === this.$parent.active;
+                .findIndex(tab => JSON.stringify(tab) === JSON.stringify(this.id));
+        },
+        active() {
+            return this.index === this.$parent.active;
         },
     },
 
     created() {
         this.$parent.tabs.push(this.id);
+    },
+
+    beforeDestroy() {
+        this.$parent.tabs.splice(this.index, 1);
     },
 };
 
