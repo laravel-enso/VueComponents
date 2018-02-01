@@ -182,6 +182,7 @@ export default {
     methods: {
         hide() {
             clearTimeout(this.timer);
+            this.hoverable = false;
             this.show = false;
         },
 
