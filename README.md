@@ -47,10 +47,23 @@ Takes the following parameters:
 - `controls`, number, option for generating the needed number of controls slots | default `0` | (optional)
 - `overlay`, boolean, flag for rendering the overlay inner component | default `false`, | (optional)
 
+#### DateIntervalFilter
+Takes the following parameters:
+- `title`, string, the name that's displayed as title | default `null` | (optional)
+- `min`, the starting date for lower limit date selector | required
+- `max` - the starting date for higher limit date selector | required
+
 #### Dropdown
 Takes the following parameters:
 - `width`, number, the minimum width for the dropdown menu | default `64` | (required)
 - `height` - number, the maximum height for the dropdown content | default `200` | (optional)
+
+#### IntervalFilter
+Takes the following parameters:
+- `title`, string, the name that's displayed as title | default `null` | (optional)
+- `type`, string, the type of the two filter inputs | required
+- `min`, the starting date for lower limit input | required
+- `max` - the starting date for higher limit input | required
 
 #### Modal
 Takes the following parameters:
@@ -79,10 +92,17 @@ Takes the following parameters:
 
 #### Tabs
 Takes the following parameters:
-- `title`, string, the title string | default `null` | (optional)
-- `align`, left/center/right, the alignment of the tabs | default `left` | (optional)
-- `tabs`, array, the list of tabs to render | (required)
-- `active`, number, the index of the active tab | default `0` | (optional)
+- `alignment`, left/center/right, the alignment of the tabs | default `left` | (optional)
+- `size`, small/normal,medium/large, the size of the element, as styled by bulma's is-* classes| default `normal` | (optional)
+- `boxed`, boolean, flag that toggles the rendering of the tabs in a box | default `false` | (optional)
+- `toggle`, boolean, flag that toggles the `is-toggle` bulma class, for mutually exclusive tabs | default `false` | (optional)
+- `toggleRounded`, boolean, flag that toggles the `is-toggle-rounded` bulma class, where the first and last tabs are rounded | default `false` | (optional)
+- `fullwidth`, boolean, flag that toggles the `is-fullwidth` bulma class, where the tabs take up the entire available width | default `false` | (optional)
+- `default`, number, tab index value, sets the active tab | default `0` | (optional)
+
+#### Tab
+Takes the following parameters:
+- `id`, string/object, a value used to identify the tab - gets passed to parent (Tabs) component | required 
 
 #### Typeahead
 Takes the following parameters:
@@ -142,7 +162,8 @@ and it will get passed to the datatables BE logic.
 
 #### VueSelectFilter
 Takes the following parameters:
-- `title` - string, the title shown for the select | default `null` | (optional)
+- `title` - string, the title to display above the options | default `null` | (optional)
+- `value` -  the selected value from the list of options | default null | required
 
 Since this component is a wrapper for VueSelect, and all listeners and attributes are passed-through,
 the regular VueSelect options are available
@@ -169,6 +190,7 @@ The `NProgress.vue` listens to the following, self-descriptive, events:
 - `php artisan vendor:publish --tag=vue-components` - the main VueJS components and their dependencies
 - `php artisan vendor:publish --tag=enso-assets` - a common alias for when wanting to update the VueJS assets,
 once a newer version is released, can be used with the `--force` flag
+
 
 ### Notes
 
