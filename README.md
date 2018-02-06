@@ -158,15 +158,7 @@ Next, when defining your DataTable, make sure you give it your filters:
 ```
 
 Note that you may use more than one such filter, just bind it inside the same encompassing `filters` object 
-and it will get passed to the datatables BE logic.  
-
-#### VueSelectFilter
-Takes the following parameters:
-- `title` - string, the title to display above the options | default `null` | (optional)
-- `value` -  the selected value from the list of options | default null | required
-
-Since this component is a wrapper for VueSelect, and all listeners and attributes are passed-through,
-the regular VueSelect options are available
+and it will get passed to the datatables BE logic.
 
 #### FileUploader
 Takes the following parameters:
