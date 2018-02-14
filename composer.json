@@ -17,10 +17,6 @@
             "role": "Developer"
         }
     ],
-    "require": {
-        "php": ">=7.1.0",
-        "laravel/framework": "5.5.*"
-    },
     "autoload": {
         "psr-4": {
             "LaravelEnso\\VueComponents\\": "src/"

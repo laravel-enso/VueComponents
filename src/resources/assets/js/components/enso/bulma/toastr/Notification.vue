@@ -3,26 +3,37 @@
     <transition appear
         :enter-active-class="enterClass"
         :leave-active-class="leaveClass"
+        @after-enter="hoverable = true"
         @after-leave="destroy">
-        <article :class="['message toastr animated', type ? `is-${type}` : '']"
-            v-if="show">
-            <div class="message-header">
-                <span class="icon is-small" v-if="icon">
-                    <fa :icon="icons[type]"></fa>
-                </span>
-                <span class="is-pulled-right">
-                    {{ i18n(displayTitle) }}
-                </span>
-                <button class="delete"
-                    @click="close()"
-                    v-if="closeButton">
-                </button>
-            </div>
-            <div class="message-body"
-                v-if="message">
-                {{ i18n(message) }}
-            </div>
-        </article>
+        <div :class="[
+            'box notification toastr animated',
+            { 'highlight': hover },
+            type ? `is-${type}` : ''
+        ]"
+            v-if="show || hover"
+            @mouseenter="startHover"
+            @mouseleave="stopHover">
+            <button class="delete"
+                @click="close()"
+                v-if="closeButton">
+            </button>
+             <article class="media">
+                <div class="media-left">
+                    <span class="icon is-large">
+                        <fa :icon="icons[type]" size="2x"></fa>
+                    </span>
+                </div>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{ i18n(displayTitle) }}</strong>
+                            <br>
+                            {{ i18n(message) }}
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </div>
     </transition>
 
 </template>
@@ -33,26 +44,26 @@ import Vue from 'vue';
 
 import fontawesome from '@fortawesome/fontawesome';
 import {
-    faArrowCircleRight, faInfoCircle, faCheckCircle, faExclamationCircle, faTimesCircle,
+    faComment, faInfoCircle, faCheckCircle, faExclamationCircle, faTimesCircle,
 } from '@fortawesome/fontawesome-free-solid/shakable.es';
 
 fontawesome.library.add([
-    faArrowCircleRight, faInfoCircle, faCheckCircle, faExclamationCircle, faTimesCircle,
+    faComment, faInfoCircle, faCheckCircle, faExclamationCircle, faTimesCircle,
 ]);
 
-const types = ['default', 'primary', 'info', 'success', 'warning', 'danger'];
+const types = ['message', 'primary', 'info', 'success', 'warning', 'danger'];
 const positions = ['left', 'right', 'center'];
 const icons = {
-    default: null,
-    primary: 'arrow-circle-right',
-    info: 'info-circle',
-    success: 'check-circle',
-    warning: 'exclamation-circle',
-    danger: 'times-circle',
+    message: faComment,
+    primary: faComment,
+    info: faInfoCircle,
+    success: faCheckCircle,
+    warning: faExclamationCircle,
+    danger: faTimesCircle,
 };
 const titles = {
-    default: 'Message',
-    primary: 'Message',
+    message: 'Message',
+    primary: 'Notification',
     info: 'Info',
     success: 'Success',
     warning: 'Warning',
@@ -60,7 +71,7 @@ const titles = {
 };
 
 export default {
-    name: 'Message',
+    name: 'Notification',
 
     props: {
         type: {
@@ -104,7 +115,9 @@ export default {
         return {
             wrapper: null,
             icons,
+            hoverable: false,
             show: true,
+            hover: false,
         };
     },
 
@@ -117,13 +130,11 @@ export default {
         enterClass() {
             return `bounceIn${this.direction}`;
         },
-
         leaveClass() {
             return this.position === 'center'
                 ? 'bounceOutUp'
                 : `bounceOut${this.direction}`;
         },
-
         icon() {
             return this.icons[this.type];
         },
@@ -163,17 +174,35 @@ export default {
     mounted() {
         this.wrapper.$el.appendChild(this.$el);
         delete this.wrapper;
-        this.timer = setTimeout(() => this.close(), this.duration);
+        this.timer = setTimeout(() => this.hide(), this.duration);
     },
 
     methods: {
-        close() {
+        hide() {
             clearTimeout(this.timer);
+            this.hoverable = false;
+            this.show = false;
+        },
+
+        close() {
+            this.hover = false;
             this.show = false;
         },
 
         destroy() {
             this.$destroy();
+        },
+        startHover() {
+            if (!this.hoverable && !this.show) {
+                return;
+            }
+
+            this.hover = true;
+            clearTimeout(this.timer);
+        },
+        stopHover() {
+            this.hover = false;
+            this.timer = setTimeout(() => this.hide(), this.duration);
         },
     },
 };
@@ -204,22 +233,20 @@ export default {
             margin-left: calc(50% - 150px);
         }
 
-        .toastr.message {
+        .box.toastr.notification {
             width: 300px;
+            padding: 12px;
             margin-bottom: 6px;
             pointer-events: auto;
             position: relative;
             z-index: 9999;
             position: relative;
-            -webkit-box-shadow: 0px 0px 5px 1px rgba(133,133,133,1);
-            -moz-box-shadow: 0px 0px 5px 1px rgba(133,133,133,1);
-            box-shadow: 0px 0px 5px 1px rgba(133,133,133,1);
+            -webkit-box-shadow: 0 0 5px 3px hsla(0,0%,50%,.3);
+            box-shadow: 0 0 5px 3px hsla(0,0%,50%,.3);
 
-            .message-header {
-
-                .icon {
-                    margin-right: 8px;
-                }
+            &.highlight {
+                -webkit-box-shadow: 0 0 5px 3px hsla(0,0%,4%,.3);
+                box-shadow: 0 0 5px 3px hsla(0,0%,4%,.3);
             }
         }
     }
