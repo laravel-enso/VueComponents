@@ -150,7 +150,7 @@ filters: {
 Next, when defining your DataTable, make sure you give it your filters:
 
 ```
-<vue-table 
+<vue-table class="box"
     source="orders" 
     :extra-filters="filters" 
     id="index-orders-id">
