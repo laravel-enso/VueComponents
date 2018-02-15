@@ -51,11 +51,9 @@ export default {
             required: true,
         },
         min: {
-            type: [Number, String],
             required: true,
         },
         max: {
-            type: [Number, String],
             required: true,
         },
     },

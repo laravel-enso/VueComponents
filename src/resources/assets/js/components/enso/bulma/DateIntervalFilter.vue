@@ -37,11 +37,9 @@ export default {
             default: null,
         },
         min: {
-            type: String,
             required: true,
         },
         max: {
-            type: String,
             required: true,
         },
     },
