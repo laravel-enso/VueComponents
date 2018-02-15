@@ -1,6 +1,6 @@
 <template>
 
-    <div class="box interval-filter">
+    <div class="interval-filter">
         <div class="has-text-centered">
             <b>{{ title }}</b>
         </div>
@@ -51,9 +51,11 @@ export default {
             required: true,
         },
         min: {
+            type: [Number, String],
             required: true,
         },
         max: {
+            type: [Number, String],
             required: true,
         },
     },

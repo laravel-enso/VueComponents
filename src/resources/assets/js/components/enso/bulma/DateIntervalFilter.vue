@@ -1,6 +1,6 @@
 <template>
 
-    <div class="box date-interval-filter">
+    <div class="date-interval-filter">
         <div class="has-text-centered">
             <b>{{ title }}</b>
         </div>
@@ -37,9 +37,11 @@ export default {
             default: null,
         },
         min: {
+            type: String,
             required: true,
         },
         max: {
+            type: String,
             required: true,
         },
     },
