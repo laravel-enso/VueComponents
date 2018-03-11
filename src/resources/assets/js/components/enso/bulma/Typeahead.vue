@@ -51,7 +51,7 @@
 
 <script>
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import fontawesome from '@fortawesome/fontawesome';
 import { faSearch } from '@fortawesome/fontawesome-free-solid/shakable.es';
 
