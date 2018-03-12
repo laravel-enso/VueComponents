@@ -25,7 +25,7 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 #### Bulma
 - `Card`, a multi purpose container
 - `Dropdown`, a simple dropdown
-- `Modal`, an ultra light modal component
+- `Modal`, an ultra light and smart modal component
 - `Overlay`, an overlay container
 - `Paginate`, a simple to use and powerful pagination module
 - `Popover`, a basic dual option popover useful for confirming actions
@@ -66,9 +66,14 @@ Takes the following parameters:
 - `max` - the starting date for higher limit input | required
 
 #### Modal
+The modal is created in the spirit of the idea that you should not have more than one modal active, 
+at any time, on the page. For that reason, the Modal component renders itself as a `<body>` child, 
+within a div, by default with the `modal-wrapper` wrapper class.
+ 
 Takes the following parameters:
 - `show`, boolean, makes the modal visible | (required)
-- `card`, boolean, if true, renders a card, otherwise renders a box | defaults to `false` | (optional)
+- `card`, boolean, if true, renders a card with header, body & footer slots, otherwise renders a simple div | defaults to `false` | (optional)
+- `container`, string, the css class of the div container used to render the modal | default `modal-wrapper` | (optional)
 
 #### Overlay
 Takes the following parameters:
