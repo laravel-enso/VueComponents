@@ -38,7 +38,7 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 #### BooleanFilter
 Takes the following properties (in addition to the propertios of `VueFilter`:
 - `yesLabel` - string, the label for filter = true | default `Yes` | (optional)
-- `yesLabel` - string, the label for filter = false | default `No` | (optional)
+- `noLabel` - string, the label for filter = false | default `No` | (optional)
 
 To use it include it in the page:
 ```
