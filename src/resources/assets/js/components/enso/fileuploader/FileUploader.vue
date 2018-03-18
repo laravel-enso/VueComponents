@@ -26,7 +26,6 @@
 
 import fontawesome from '@fortawesome/fontawesome';
 import { faUpload } from '@fortawesome/fontawesome-free-solid/shakable.es';
-import { lastDayOfMonth } from 'date-fns';
 
 fontawesome.library.add(faUpload);
 
@@ -132,7 +131,7 @@ export default {
         },
         sizeCheckPasses(file) {
             if (file.size > this.fileSizeLimit) {
-                this.$toastr.warning(`File size Limit of ${this.fileSizeLimit} Kb excedeed by ${file.name}`);
+                this.$toastr.warning(`File size Limit of ${this.fileSizeLimit} Kb exceeded by ${file.name}`);
                 return false;
             }
 

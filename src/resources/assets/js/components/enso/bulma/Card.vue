@@ -73,7 +73,8 @@
 <script>
 
 import fontawesome from '@fortawesome/fontawesome';
-import { faSearch, faSync, faAngleDown } from '@fortawesome/fontawesome-free-solid/shakable.es';
+import { faSearch, faSync, faAngleDown }
+    from '@fortawesome/fontawesome-free-solid/shakable.es';
 import CardControl from './CardControl.vue';
 import Overlay from './Overlay.vue';
 
@@ -131,6 +132,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        scrollable: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -154,10 +159,18 @@ export default {
         content() {
             return this.$el.querySelector('.card-content');
         },
-        contentStyle() {
+        maxHeight() {
             return this.collapsed
                 ? { 'max-height': 0 }
-                : null;
+                : {};
+        },
+        overflowY() {
+            return this.scrollable || !this.expanded
+                ? { 'overflow-y': 'hidden' }
+                : {};
+        },
+        contentStyle() {
+            return Object.assign({}, this.maxHeight, this.overflowY);
         },
     },
 
@@ -179,7 +192,7 @@ export default {
 
             this.$emit('expand');
             this.content.style['max-height'] = `${this.content.scrollHeight}px`;
-            this.expanded = true;
+            setTimeout(() => { this.expanded = true; }, 400);
         },
         collapse() {
             if (!this.content.style['max-height']) {
@@ -237,7 +250,6 @@ export default {
 
     .card-content {
         transition: max-height .400s ease;
-        overflow-y: hidden;
     }
 
     .icon.angle[aria-hidden="true"] {

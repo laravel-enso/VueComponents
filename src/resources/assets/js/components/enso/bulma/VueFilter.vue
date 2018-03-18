@@ -1,6 +1,6 @@
 <template>
 
-    <div class="box vue-filter">
+    <div class="vue-filter">
         <div class="has-text-centered">
             <b>{{ title }}</b>
         </div>
@@ -68,6 +68,7 @@ export default {
             },
         },
         value: {
+            type: null,
             required: true,
         },
         hideOff: {
@@ -76,14 +77,14 @@ export default {
         },
     },
 
-    computed: {
-        ...mapGetters('locale', ['__']),
-    },
-
     data() {
         return {
             internalValue: this.value,
         };
+    },
+
+    computed: {
+        ...mapGetters('locale', ['__']),
     },
 
     methods: {

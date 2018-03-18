@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <div class="control has-icons-left"
+        <div class="control has-icons-left has-icons-right"
             :class="{ 'is-loading': loading }">
             <input class="input" type="text"
                 :class="{ 'is-danger': hasError }"
@@ -17,6 +17,11 @@
             <span class="icon is-small is-left">
                 <fa icon="search"></fa>
             </span>
+            <span class="icon is-small is-right clear-button"
+                v-if="value && !loading"
+                @click="$emit('input', null)">
+                <a class="delete is-small"></a>
+            </span>
         </div>
         <div :class="['dropdown typeahead', { 'is-active': showDropdown }]">
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
@@ -26,8 +31,21 @@
                         :key="index"
                         :class="{ 'is-active': position === index }"
                         @mousedown.prevent="hit"
-                        @mousemove="position = index"
-                        v-html="$options.filters.highlight(item[label], value)">
+                        @mousemove="position = index">
+                        <slot name="option"
+                            :highlight="highlight"
+                            :item="item">
+                            <span v-html="highlight(item[label])"></span>
+                        </slot>
+                    </a>
+                    <a href="#" class="dropdown-item"
+                        v-if="!items.length">
+                        <span v-if="loading">
+                            {{ searching }}
+                        </span>
+                        <span v-else>
+                            {{ notResults }}
+                        </span>
                     </a>
                 </div>
             </div>
@@ -38,7 +56,7 @@
 
 <script>
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import fontawesome from '@fortawesome/fontawesome';
 import { faSearch } from '@fortawesome/fontawesome-free-solid/shakable.es';
 
@@ -46,6 +64,10 @@ fontawesome.library.add(faSearch);
 
 export default {
     name: 'Typeahead',
+
+    filters: {
+
+    },
 
     props: {
         disabled: {
@@ -72,6 +94,14 @@ export default {
             type: String,
             default: 'What are you searching for today?',
         },
+        notResults: {
+            type: String,
+            default: 'No results found matching the criteria...',
+        },
+        searching: {
+            type: String,
+            default: 'Searching...',
+        },
         validator: {
             type: Boolean,
             default: false,
@@ -79,29 +109,12 @@ export default {
         regExp: {
             type: RegExp,
             default() {
-                return /^[A-Za-z0-9 _-]*[A-Za-z0-9 _-]*$/;
+                return /^.*$/;
             },
         },
         value: {
             type: String,
             default: '',
-        },
-    },
-
-    computed: {
-        hasError() {
-            return this.validator && this.value && !this.regExp.test(this.value);
-        },
-        showDropdown() {
-            return !this.hideDropdown && this.value && !this.hasError && this.items.length > 0;
-        },
-    },
-
-    watch: {
-        value() {
-            if (!this.value) {
-                this.items = [];
-            }
         },
     },
 
@@ -114,13 +127,20 @@ export default {
         };
     },
 
-    filters: {
-        highlight(item, value) {
-            value.split(' ').filter(word => word.length).forEach((word) => {
-                item = item.replace(new RegExp(`(${word})`, 'gi'), '<b>$1</b>');
-            });
+    computed: {
+        hasError() {
+            return this.validator && this.value && !this.regExp.test(this.value);
+        },
+        showDropdown() {
+            return !this.hideDropdown && this.value && !this.hasError;
+        },
+    },
 
-            return item;
+    watch: {
+        value() {
+            if (!this.value) {
+                this.items = [];
+            }
         },
     },
 
@@ -136,7 +156,9 @@ export default {
 
             this.loading = true;
 
-            axios.get(this.source, { params: this.params() }).then((response) => {
+            axios.get(this.source, {
+                params: { query: this.value, length: this.length, params: this.params },
+            }).then((response) => {
                 this.hideDropdown = false;
                 this.items = response.data;
                 this.loading = false;
@@ -145,19 +167,12 @@ export default {
                 this.handleError(error);
             });
         },
-        params() {
-            return {
-                query: this.value,
-                length: this.length,
-                params: this.params,
-            };
-        },
         update(value) {
             this.$emit('selected', this.items[this.position]);
             this.$emit('input', value);
         },
         hit() {
-            if (this.showDropdown) {
+            if (this.showDropdown && this.items.length) {
                 this.update(this.items[this.position][this.label]);
                 this.$emit('update', this.items[this.position]);
                 this.hideDropdown = true;
@@ -172,6 +187,13 @@ export default {
             if (this.position < this.items.length - 1) {
                 this.position++;
             }
+        },
+        highlight(item) {
+            this.value.split(' ').filter(word => word.length).forEach((word) => {
+                item = item.replace(new RegExp(`(${word})`, 'gi'), '<b>$1</b>');
+            });
+
+            return item;
         },
     },
 };
@@ -192,6 +214,10 @@ export default {
                 overflow-x: hidden;
             }
         }
+    }
+
+    .control.has-icons-right .icon.clear-button {
+        pointer-events: all;
     }
 
 </style>

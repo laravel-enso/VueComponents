@@ -4,7 +4,7 @@
         :enter-active-class="enterClass"
         :leave-active-class="leaveClass"
         @after-enter="hoverable = true"
-        @after-leave="destroy">
+        @after-leave="$destroy()">
         <div :class="[
             'box notification toastr animated',
             { 'highlight': hover },
@@ -43,9 +43,8 @@
 import Vue from 'vue';
 
 import fontawesome from '@fortawesome/fontawesome';
-import {
-    faComment, faInfoCircle, faCheckCircle, faExclamationCircle, faTimesCircle,
-} from '@fortawesome/fontawesome-free-solid/shakable.es';
+import { faComment, faInfoCircle, faCheckCircle, faExclamationCircle, faTimesCircle }
+    from '@fortawesome/fontawesome-free-solid/shakable.es';
 
 fontawesome.library.add([
     faComment, faInfoCircle, faCheckCircle, faExclamationCircle, faTimesCircle,
@@ -159,7 +158,7 @@ export default {
                 name: 'ToastrWrapper',
                 render(h) {
                     return h('div', {
-                        class: `${containerClass}`,
+                        class: containerClass,
                     });
                 },
             });
@@ -173,7 +172,6 @@ export default {
 
     mounted() {
         this.wrapper.$el.appendChild(this.$el);
-        delete this.wrapper;
         this.timer = setTimeout(() => this.hide(), this.duration);
     },
 
@@ -183,14 +181,9 @@ export default {
             this.hoverable = false;
             this.show = false;
         },
-
         close() {
             this.hover = false;
             this.show = false;
-        },
-
-        destroy() {
-            this.$destroy();
         },
         startHover() {
             if (!this.hoverable && !this.show) {
