@@ -23,6 +23,7 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 - Select component, for the [Select](https://github.com/laravel-enso/Select) package
 
 #### Bulma
+- `BooleanFilter`, a single option filtering component with predefined options to filter boolean values (true, false, null), that can be used in conjunction with datatables or anywhere else you need it 
 - `Card`, a multi purpose container
 - `Dropdown`, a simple dropdown
 - `Modal`, an ultra light and smart modal component
@@ -32,8 +33,20 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 - `Tabs`, a tab manager component
 - `Typeahead`, exactly what the name says
 - `VueFilter`, a single option filtering component, that can be used in conjunction with datatables or anywhere else you need it 
-- `BooleanFilter`, a single option filtering component with predefined options to filter boolean values (true, false, null), that can be used in conjunction with datatables or anywhere else you need it 
 - `VueSelectFilter`, a select option filtering component
+
+#### BooleanFilter
+Takes the following properties (in addition to the propertios of `VueFilter`:
+- `yesLabel` - string, the label for filter = true | default `Yes` | (optional)
+- `yesLabel` - string, the label for filter = false | default `No` | (optional)
+
+To use it include it in the page:
+```
+<boolean-filter
+        title="Active"
+        v-model="filters.users.active">
+</boolean-filter>
+```
 
 ##### Card
 Takes the following properties:
@@ -170,19 +183,6 @@ Next, when defining your DataTable, make sure you give it your filters:
 
 Note that you may use more than one such filter, just bind it inside the same encompassing `filters` object 
 and it will get passed to the datatables BE logic.
-
-#### BooleanFilter
-Takes the following properties (in addition to the propertios of `VueFilter`:
-- `yesLabel` - string, the label for filter = true | default `Yes` | (optional)
-- `yesLabel` - string, the label for filter = false | default `No` | (optional)
-
-To use it include it in the page:
-```
-<boolean-filter
-        title="Active"
-        v-model="filters.users.active">
-</boolean-filter>
-```
 
 
 #### FileUploader
