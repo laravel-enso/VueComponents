@@ -6,13 +6,13 @@
         </div>
         <div class="columns">
             <div class="column">
-                <datepicker
+                <datepicker :format="format"
                     :value="min"
                     @input="$emit('update-min', $event || null)">
                 </datepicker>
             </div>
             <div class="column">
-                <datepicker
+                <datepicker :format="format"
                     :value="max"
                     @input="$emit('update-max', $event || null)">
                 </datepicker>
@@ -43,6 +43,10 @@ export default {
         max: {
             type: null,
             required: true,
+        },
+        format: {
+            type: String,
+            default: 'd-m-Y',
         },
     },
 };
