@@ -17,7 +17,7 @@
                         </span>
                         <span class="filter-label" v-else
                             :class="option.class">
-                            {{ __(option.label) }}
+                            {{ option.label }}
                         </span>
                     </a>
                 </li>
@@ -28,7 +28,7 @@
                             :class="value === null ? 'has-text-danger' : 'has-text-success'">
                             <fa icon="power-off"></fa>
                         </span>
-                        <span class="filter-label">{{ __(offLabel) }}</span>
+                        <span class="filter-label" v-if="!icons">{{ offLabel }}</span>
                     </a>
                 </li>
             </ul>
