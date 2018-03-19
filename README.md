@@ -129,10 +129,14 @@ Takes the following properties:
 #### VueFilter
 Takes the following properties:
 - `title` - string, the title to display above the options | default `null` | (optional)
-- `options` - object, the options the user can choose from when filtering | default `{}` | (required)
-- `value` -  the selected value from the list of options | (required)
+- `offLabel` - string, the label for the 'off' button | default `Off` | (optional)
+- `icons` - boolean, flag for showing icons instead of labels - should be used together with `options.label` which should now represent a font awesome icon class | default `false` | (optional)
+- `options` - array, the options the user can choose from when filtering, see below for examples | default `[]` | (required)
 - `theme` - string, the theme to use for styling the box | default `primary` | (optional)
 - `hideOff` - boolean, flag for showing an off switch | default `false` | (optional)
+
+Notice that the component is bound to a model, much like an input element. If the model variable has a valid value, 
+the filter will start up with that option selected.  
 
 To use it include it in the page:
 ```
@@ -155,6 +159,14 @@ filters: {
         paid_taxes: '',                
     }
 },
+```
+
+When using the icons flag, options may be something like:
+```
+options: [
+    { value: true, label: 'check', class: 'has-text-success' },
+    { value: false, label: 'times', class: 'has-text-danger' },
+],
 ```
 
 Next, when defining your DataTable, make sure you give it your filters:

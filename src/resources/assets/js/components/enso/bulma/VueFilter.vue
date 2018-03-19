@@ -69,7 +69,7 @@ export default {
         },
         value: {
             type: null,
-            required: true,
+            default: null,
         },
         hideOff: {
             type: Boolean,
