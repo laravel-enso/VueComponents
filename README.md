@@ -36,15 +36,14 @@ VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/E
 - `VueSelectFilter`, a select option filtering component
 
 #### BooleanFilter
-Takes the following properties (in addition to the propertios of `VueFilter`:
-- `yesLabel` - string, the label for filter = true | default `Yes` | (optional)
-- `noLabel` - string, the label for filter = false | default `No` | (optional)
+Takes the same properties like `VueFilter`
 
 To use it include it in the page:
 ```
 <boolean-filter
-        title="Active"
-        v-model="filters.users.active">
+    title="Active"
+    :value="filters.users.active"
+    @input="value => { filters.users.active = value }">
 </boolean-filter>
 ```
 
