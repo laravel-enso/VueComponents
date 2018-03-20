@@ -2,7 +2,8 @@
 
     <vue-filter
             :options="options"
-            :icons="true"
+            icons
+            :value="value"
             v-bind="$attrs"
             v-on="$listeners">
     </vue-filter>
@@ -15,9 +16,18 @@ import VueFilter from '../bulma/VueFilter.vue';
 
 
 export default {
+    name: 'BooleanFilter',
+
     components: { VueFilter },
 
-    data: function() {
+    props: {
+        value: {
+            type: null,
+            default: null,
+        },
+    },
+    
+    data() {
         return {
             "options": [{
                 "value": true,

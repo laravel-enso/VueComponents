@@ -42,8 +42,7 @@ To use it include it in the page:
 ```
 <boolean-filter
     title="Active"
-    :value="filters.users.active"
-    @input="value => { filters.users.active = value }">
+    v-model="filters.users.active">
 </boolean-filter>
 ```
 
