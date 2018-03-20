@@ -39,7 +39,6 @@
 
 <script>
 
-import { mapGetters } from 'vuex';
 import fontawesome from '@fortawesome/fontawesome';
 import { faPowerOff } from '@fortawesome/fontawesome-free-solid/shakable.es';
 
@@ -81,10 +80,6 @@ export default {
         return {
             internalValue: this.value,
         };
-    },
-
-    computed: {
-        ...mapGetters('locale', ['__']),
     },
 
     methods: {
