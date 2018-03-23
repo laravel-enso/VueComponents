@@ -1,8 +1,7 @@
 <template>
 
-    <vue-filter
+    <vue-filter icons
             :options="options"
-            icons
             :value="value"
             v-bind="$attrs"
             v-on="$listeners">
@@ -26,20 +25,20 @@ export default {
             default: null,
         },
     },
-    
+
     data() {
         return {
-            "options": [{
-                "value": true,
-                "label": 'check',
-                "class": 'has-text-success',
+            options: [{
+                value: true,
+                label: 'check',
+                class: 'has-text-success',
             }, {
-                "value": false,
-                "label": 'times',
-                "class": 'has-text-danger',
+                value: false,
+                label: 'times',
+                class: 'has-text-danger',
             }],
-        }
-    },   
+        };
+    },
 };
 
 </script>
