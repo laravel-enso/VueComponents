@@ -54,7 +54,7 @@ export default {
         },
         offLabel: {
             type: String,
-            default: 'Off',
+            default: '',
         },
         icons: {
             type: Boolean,
