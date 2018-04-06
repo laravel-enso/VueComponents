@@ -11,16 +11,21 @@
 VueJS Components Collection for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Features
-- Bulma elements, suite of common, reusable components styled for Bulma
-- Charts components, for the [Charts](https://github.com/laravel-enso/Charts) package
-- Comments components, for the [CommentsManager](https://github.com/laravel-enso/CommentsManager) package
-- Contacts components, for the [Contacts](https://github.com/laravel-enso/Contacts) package
-- Datatable component, for the [Datatable](https://github.com/laravel-enso/Datatable) package
-- Documents components, for the [DocumentsManager](https://github.com/laravel-enso/DocumentsManager) package
+- Bulma elements, suite of common, reusable components styled for Bulma, such as:
+    - BooleanFilter
+    - Card
+    - DateIntervalFilter
+    - Dropdown
+    - IntervalFilter
+    - Modal
+    - Overlay
+    - Paginate
+    - Popover
+    - Tabs & Tab
+    - Typeahead
+    - VueFilter
 - FileUploader component, for handling the upload of files
 - NProgress component, for showing load progress
-- RoleManager components, for the [RoleManager](https://github.com/laravel-enso/RoleManager) package
-- Select component, for the [Select](https://github.com/laravel-enso/Select) package
 
 #### Bulma
 - `BooleanFilter`, a single option filtering component with predefined options to filter boolean values (true, false, null), that can be used in conjunction with datatables or anywhere else you need it 
@@ -123,6 +128,7 @@ Takes the following properties:
 Takes the following properties:
 - `id`, string/object, a value used to identify the tab - gets passed to parent (Tabs) component | required 
 - `default`, boolean, tab index value, sets the active tab | default `false` | (optional)
+- `disabled`, boolean, flag that disables a tab | defautl `false` | (optional)
 
 #### Typeahead
 Takes the following properties:
