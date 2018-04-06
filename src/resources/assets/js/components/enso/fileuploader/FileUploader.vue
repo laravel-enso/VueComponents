@@ -8,9 +8,9 @@
             ref="input"
             @change="upload">
         <slot name="upload-button"
-            :open-file-browser="openFileBrowser"
-            @click="openFileBrowser">
-            <a class="icon is-small">
+            :open-file-browser="openFileBrowser">
+            <a class="icon is-small"
+                @click="openFileBrowser">
                 <fa icon="upload"></fa>
             </a>
         </slot>
