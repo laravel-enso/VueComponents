@@ -231,13 +231,14 @@ export default {
         }
 
         .box.toastr.notification {
-            width: 300px;
+            width: 350px;
             padding: 12px;
             margin-bottom: 6px;
             pointer-events: auto;
             position: relative;
             z-index: 9999;
             position: relative;
+            overflow-x: hidden;
             -webkit-box-shadow: 0 0 5px 3px hsla(0,0%,50%,.3);
             box-shadow: 0 0 5px 3px hsla(0,0%,50%,.3);
 
