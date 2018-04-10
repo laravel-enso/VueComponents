@@ -231,7 +231,7 @@ export default {
         }
 
         .box.toastr.notification {
-            width: 350px;
+            width: 300px;
             padding: 12px;
             margin-bottom: 6px;
             pointer-events: auto;
