@@ -67,7 +67,7 @@ export default {
 
     methods: {
         setActive(index) {
-            if (this.active === index || this.tabs[index].disabled) {
+            if (this.active === index || this.disabled.includes(index)) {
                 return;
             }
 
