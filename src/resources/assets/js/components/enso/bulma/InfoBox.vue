@@ -38,7 +38,7 @@ export default {
 @import '~bulma/sass/utilities/derived-variables.sass';
 
 .box {
-    border-top: 4px solid $grey;
+    border-top: 2px solid $grey;
     -webkit-box-shadow: 0px 0px 5px 1px rgba(133,133,133,1);
     box-shadow: 0px 0px 5px 1px rgba(133,133,133,1);
     transition: border-color .75s ease;
