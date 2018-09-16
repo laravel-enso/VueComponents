@@ -32,6 +32,14 @@
                 @update="count.contacts = $refs.contacts.count"
                 ref="contacts"/>
         </tab>
+        <tab :id="__('Discussions')"
+            v-if="discussions">
+            <discussions controls
+                :type="type"
+                :id="id"
+                @update="count.discussions = $refs.discussions.count"
+                ref="discussions"/>
+        </tab>
         <tab :id="__('Documents')"
             v-if="documents">
             <documents controls
@@ -50,13 +58,14 @@ import Tab from './Tab.vue';
 import Addresses from '../addresses/Addresses.vue';
 import Comments from '../comments/Comments.vue';
 import Contacts from '../contacts/Contacts.vue';
+import Discussions from '../discussions/Discussions.vue';
 import Documents from '../documents/Documents.vue';
 
 export default {
     name: 'MorphableContainer',
 
     components: {
-        Tabs, Tab, Addresses, Comments, Contacts, Documents,
+        Tabs, Tab, Addresses, Comments, Contacts, Discussions, Documents,
     },
 
     props: {
@@ -68,6 +77,10 @@ export default {
             type: String,
             required: true,
         },
+        addresses: {
+            type: Boolean,
+            default: false,
+        },
         contacts: {
             type: Boolean,
             default: false,
@@ -76,11 +89,11 @@ export default {
             type: Boolean,
             default: false,
         },
-        documents: {
+        discussions: {
             type: Boolean,
             default: false,
         },
-        addresses: {
+        documents: {
             type: Boolean,
             default: false,
         },
@@ -92,14 +105,11 @@ export default {
                 addresses: 0,
                 comments: 0,
                 contacts: 0,
+                discussions: 0,
                 documents: 0,
             },
         };
     },
-
 };
+
 </script>
-
-<style lang="scss" scoped>
-
-</style>
