@@ -8,8 +8,7 @@
                 {{ count[tab.toLowerCase()] }}
             </span>
         </span>
-        <tab class="has-padding-medium"
-            :id="__('Addresses')"
+        <tab :id="__('Addresses')"
             v-if="addresses">
             <addresses controls
                 :type="type"
@@ -17,8 +16,7 @@
                 @update="count.addresses = $refs.addresses.count"
                 ref="addresses"/>
         </tab>
-        <tab class="has-padding-medium"
-            :id="__('Comments')"
+        <tab :id="__('Comments')"
             v-if="comments">
             <comments controls
                 :type="type"
@@ -26,8 +24,7 @@
                 @update="count.comments = $refs.comments.count"
                 ref="comments"/>
         </tab>
-        <tab class="has-padding-medium"
-            :id="__('Contacts')"
+        <tab :id="__('Contacts')"
             v-if="contacts">
             <contacts controls
                 :type="type"
@@ -35,8 +32,7 @@
                 @update="count.contacts = $refs.contacts.count"
                 ref="contacts"/>
         </tab>
-        <tab class="has-padding-medium"
-            :id="__('Documents')"
+        <tab :id="__('Documents')"
             v-if="documents">
             <documents controls
                 :type="type"
