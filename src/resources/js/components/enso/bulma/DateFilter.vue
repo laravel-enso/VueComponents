@@ -2,15 +2,15 @@
 
     <div class="date-filter is-paddingless">
         <div class="has-text-centered has-padding-medium has-background-light">
-            <strong v-if="custom">{{ i18n('Between') }}</strong>
+            <strong v-if="selected === filters.custom">{{ i18n('Between') }}</strong>
             <strong v-else>{{ i18n('When') }}</strong>
         </div>
         <div class="has-padding-large">
             <div class="tags-wrapper">
-                <span :class="['tag filter', {'is-warning': filter === key}]"
+                <span :class="['tag filter', {'is-warning': selected === key}]"
                     v-for="(type, key) in filters"
                     :key="key"
-                    @click="filter = key; update()">
+                    @click="selected = key; update()">
                     {{ i18n(type) }}
                 </span>
             </div>
@@ -21,14 +21,14 @@
                     @enter="expand"
                     @leave="shrink">
                     <div class="columns is-mobile animated has-margin-top-small"
-                        v-show="filter === filters.custom"
+                        v-show="selected === filters.custom"
                         ref="filter">
                         <div class="column picker-wrapper">
                             <datepicker :format="format"
                                 v-model="interval.min"
                                 :locale="locale"
                                 :placeholder="i18n('From')"
-                                :disabled="filter !== filters.custom"
+                                :disabled="selected !== filters.custom"
                                 @input="update()"/>
                         </div>
                         <div class="column picker-wrapper">
@@ -36,15 +36,13 @@
                                 v-model="interval.max"
                                 :locale="locale"
                                 :placeholder="i18n('To')"
-                                :disabled="filter !== filters.custom"
+                                :disabled="selected !== filters.custom"
                                 @input="update()"/>
                         </div>
                     </div>
                 </transition>
             </div>
-
         </div>
-
     </div>
 
 </template>
@@ -80,7 +78,6 @@ export default {
     },
 
     data: () => ({
-        custom: false,
         interval: {
             min: null,
             max: null,
@@ -92,7 +89,7 @@ export default {
             lastMonth: 'last month',
             custom: 'custom',
         },
-        filter: 'today',
+        selected: 'today',
     }),
 
     computed: {
@@ -109,8 +106,8 @@ export default {
 
     methods: {
         update() {
-            if (this.filter !== this.filters.custom) {
-                this[this.filter]();
+            if (this.selected !== this.filters.custom) {
+                this[this.selected]();
             }
 
             this.$emit('update', this.interval);
