@@ -24,16 +24,20 @@
                         v-show="selected === filters.custom"
                         ref="filter">
                         <div class="column picker-wrapper">
-                            <datepicker :format="format"
-                                v-model="interval.min"
+                            <datepicker v-model="interval.min"
+                                :format="format"
+                                :is-danger="inversed"
+                                :is-warning="equal"
                                 :locale="locale"
                                 :placeholder="i18n('From')"
                                 :disabled="selected !== filters.custom"
                                 @input="update()"/>
                         </div>
                         <div class="column picker-wrapper">
-                            <datepicker :format="format"
-                                v-model="interval.max"
+                            <datepicker v-model="interval.max"
+                                :format="format"
+                                :is-danger="inversed"
+                                :is-warning="equal"
                                 :locale="locale"
                                 :placeholder="i18n('To')"
                                 :disabled="selected !== filters.custom"
@@ -49,7 +53,7 @@
 
 <script>
 
-import { format, addDays, subDays, subWeeks, subMonths } from 'date-fns';
+import { addDays, compareAsc, format, parse, subDays, subMonths, subWeeks } from 'date-fns';
 import Datepicker from '../vueforms/Datepicker.vue';
 
 export default {
@@ -97,6 +101,22 @@ export default {
             return this.format.replace('d', 'DD')
                 .replace('m', 'MM')
                 .replace('Y', 'YYYY');
+        },
+        parsedMax() {
+            return parse(this.interval.max, this.alternateFormat, new Date());
+        },
+        parsedMin() {
+            return parse(this.interval.min, this.alternateFormat, new Date());
+        },
+        inversed() {
+            return !!this.interval.min
+                && !!this.interval.max
+                && compareAsc(this.parsedMin, this.parsedMax) === 1;
+        },
+        equal() {
+            return !!this.interval.min
+                && !!this.interval.max
+                && compareAsc(this.parsedMin, this.parsedMax) === 0;
         },
     },
 
