@@ -27,11 +27,11 @@
                 <a class="delete is-small"/>
             </span>
         </div>
+        <slot name="controls"
+            :items="items"/>
         <div :class="['dropdown typeahead', { 'is-active': showDropdown }]">
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
                 <div class="dropdown-content">
-                    <slot name="controls"
-                        :items="items"/>
                     <a href="#" class="dropdown-item"
                         v-for="(item, index) in filter(items)"
                         :key="index"
