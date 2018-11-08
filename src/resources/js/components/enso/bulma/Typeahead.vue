@@ -23,7 +23,7 @@
             </span>
             <span class="icon is-small is-right clear-button"
                 v-if="value && !loading"
-                @click="$emit('input', '')">
+                @click="update('')">
                 <a class="delete is-small"/>
             </span>
         </div>
@@ -71,10 +71,6 @@ library.add(faSearch);
 
 export default {
     name: 'Typeahead',
-
-    filters: {
-
-    },
 
     props: {
         disabled: {
@@ -181,7 +177,7 @@ export default {
             }).catch(error => this.handleError(error));
         },
         update(value) {
-            if (!this.value) {
+            if (value === '') {
                 this.items = [];
             }
 
