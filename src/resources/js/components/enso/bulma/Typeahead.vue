@@ -72,10 +72,6 @@ library.add(faSearch);
 export default {
     name: 'Typeahead',
 
-    filters: {
-
-    },
-
     props: {
         disabled: {
             type: Boolean,
@@ -153,6 +149,16 @@ export default {
         },
         showDropdown() {
             return !this.hideDropdown && this.value && !this.hasError;
+        },
+    },
+
+    watch: {
+        value: {
+            handler(value) {
+                if (value === '') {
+                    this.items = [];
+                }
+            },
         },
     },
 
