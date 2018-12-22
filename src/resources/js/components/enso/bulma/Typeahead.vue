@@ -12,7 +12,7 @@
                 :disabled="disabled"
                 :placeholder="placeholder"
                 :value="value"
-                @input="update($event.target.value);fetch();"
+                @input="update($event.target.value); fetch()"
                 @keydown.up="keyUp"
                 @keydown.down="keyDown"
                 @keydown.enter="hit"
