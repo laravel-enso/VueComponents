@@ -42,6 +42,7 @@
             id="Documents"
             v-if="documents">
             <documents controls
+                :compact="compact"
                 :type="type"
                 :id="id"
                 @update="count.documents = $refs.documents.count"
@@ -91,6 +92,10 @@ export default {
         type: {
             type: String,
             required: true,
+        },
+        compact: {
+            type: Boolean,
+            default: false,
         },
     },
 
