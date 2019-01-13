@@ -1,7 +1,6 @@
 <template>
 
-    <tabs alignment="centered"
-        custom>
+    <enso-tabs>
         <span slot="label"
             slot-scope="{ tab }">
             {{ __(tab) }}
@@ -47,7 +46,7 @@
                 @update="count.documents = $refs.documents.count"
                 ref="documents"/>
         </tab>
-    </tabs>
+    </enso-tabs>
 
 </template>
 
@@ -57,14 +56,14 @@ import Addresses from '../addresses/Addresses.vue';
 import Comments from '../comments/Comments.vue';
 import Discussions from '../discussions/Discussions.vue';
 import Documents from '../documents/Documents.vue';
-import Tabs from './Tabs.vue';
+import EnsoTabs from './EnsoTabs.vue';
 import Tab from './Tab.vue';
 
 export default {
     name: 'Accessories',
 
     components: {
-        Addresses, Comments, Discussions, Documents, Tab, Tabs,
+        Addresses, Comments, Discussions, Documents, Tab, EnsoTabs,
     },
 
     props: {

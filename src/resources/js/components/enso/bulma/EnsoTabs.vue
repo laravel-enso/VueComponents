@@ -1,15 +1,12 @@
 <template>
     <div>
-        <div :class="[
-                'tabs', 'is-' + alignment, 'is-' + size, { 'is-boxed': boxed },
-                { 'is-toggle': toggle }, { 'is-toggle-rounded': toggleRounded },
-                { 'is-fullwidth': fullwidth }
-            ]">
-            <ul class="tab-list">
-                <li v-for="(tab, index) in tabs"
-                    :class="{ 'is-active': index === active }"
-                    :key="index">
-                    <a @click="activate(index)"
+        <div :class="['tabs is-toggle is-fullwidth', 'is-' + alignment, 'is-' + size]">
+            <ul class="tab-list has-background-grey-light">
+                <li :class="{ 'is-active': index === active }"
+                    :key="index"
+                    v-for="(tab, index) in tabs">
+                    <a :class="{ 'has-background-white has-text-grey-dark': index === active }"
+                        @click="activate(index)"
                         :disabled="disabled.includes(index)">
                         <slot name="label"
                             :tab="tab">
@@ -26,7 +23,7 @@
 <script>
 
 export default {
-    name: 'Tabs',
+    name: 'EnsoTabs',
 
     props: {
         alignment: {
@@ -35,27 +32,11 @@ export default {
             validator: value => ['left', 'centered', 'right']
                 .includes(value),
         },
-        boxed: {
-            type: Boolean,
-            default: false,
-        },
-        fullwidth: {
-            type: Boolean,
-            default: false,
-        },
         size: {
             type: String,
             default: 'normal',
             validator: value => ['normal', 'small', 'medium', 'large']
                 .includes(value),
-        },
-        toggle: {
-            type: Boolean,
-            default: false,
-        },
-        toggleRounded: {
-            type: Boolean,
-            default: false,
         },
     },
 
@@ -96,9 +77,31 @@ export default {
 
 <style lang="scss" scoped>
 
-    a[disabled] {
-        opacity: .5;
-        cursor: not-allowed;
+    .tabs.is-fullwidth.is-toggle {
+        .tab-list {
+            border-radius: 6px;
+
+            li {
+                padding: 0.5em;
+            }
+
+            .is-active > a {
+                opacity: 1;
+                font-weight: 600;
+            }
+
+            a {
+                transition: background 0.3s;
+                border: unset;
+                border-radius: 6px;
+                opacity: 0.7;
+
+                &[disabled] {
+                    opacity: .4;
+                    cursor: not-allowed;
+                }
+            }
+        }
     }
 
 </style>
