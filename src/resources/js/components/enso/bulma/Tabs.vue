@@ -59,13 +59,11 @@ export default {
         },
     },
 
-    data() {
-        return {
-            tabs: [],
-            active: null,
-            disabled: [],
-        };
-    },
+    data: () => ({
+        tabs: [],
+        active: null,
+        disabled: [],
+    }),
 
     methods: {
         select(index) {
