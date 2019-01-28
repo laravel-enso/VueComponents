@@ -104,9 +104,14 @@ export default {
             type: String,
             default: 'en',
         },
+        default: {
+            type: String,
+            default: 'today',
+            validator: v => ['today', 'yesterday', 'last week', 'last month', 'all'].includes(v),
+        },
     },
 
-    data: () => ({
+    data: v => ({
         interval: {
             min: null,
             max: null,
@@ -117,8 +122,9 @@ export default {
             lastWeek: 'last week',
             lastMonth: 'last month',
             custom: 'custom',
+            all: 'all',
         },
-        selected: 'today',
+        selected: v.default,
     }),
 
     computed: {
@@ -164,6 +170,10 @@ export default {
             }
 
             this.$emit('update', this.interval);
+        },
+        all() {
+            this.interval.min = null;
+            this.interval.max = null;
         },
         today() {
             this.interval.min = format(new Date(), this.alternateFormat);
