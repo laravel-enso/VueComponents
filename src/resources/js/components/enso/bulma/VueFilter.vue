@@ -19,7 +19,7 @@
                         :class="{ 'is-active': option.value === value }">
                         <a @click="update(option.value)">
                             <span v-if="icons"
-                                :class="['icon is-small', option.class]">
+                                :class="['icon', option.class]">
                                 <fa :icon="option.label"/>
                             </span>
                             <span v-else
@@ -33,8 +33,10 @@
                         :class="{ 'is-active': value === null }">
                         <a @click="update()">
                             <span :class="[
-                                    'icon is-small',
-                                    value === null ? 'has-text-danger' : 'has-text-success'
+                                    'icon',
+                                    value === null
+                                        ? 'has-text-danger'
+                                        : 'has-text-success'
                                 ]">
                                 <fa icon="power-off"/>
                             </span>
@@ -126,6 +128,9 @@ export default {
 
 <style lang="scss" scoped>
 
+@import "./node_modules/bulma/sass/utilities/initial-variables";
+@import '~bulma/sass/utilities/derived-variables.sass';
+
     .vue-filter {
         .header {
             border-top-left-radius: inherit;
@@ -139,6 +144,19 @@ export default {
 
             .tabs {
                 height: 2.25em;
+
+                li {
+                    &.is-active {
+                        a {
+                            background-color: $warning;
+                            border-color: $warning;
+                        }
+                    }
+
+                    a {
+                        padding: 0.25em 0;
+                    }
+                }
             }
         }
     }

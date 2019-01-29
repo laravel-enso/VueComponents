@@ -220,8 +220,8 @@ export default {
 
         .tags-wrapper {
             .filter-tags {
-                height: 2.25em;
-                padding: 0.3em;
+                min-height: 2.25em;
+                padding: 0.35em;
             }
         }
     }
