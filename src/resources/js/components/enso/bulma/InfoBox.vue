@@ -5,7 +5,7 @@
                 { 'is-clickable': collapsible }
             ]"
             v-if="title"
-            @click="collapsible ? expanded = !expanded : null">
+            @click="collapsible ? toggle() : null">
             <slot name="title"/>
             <span class="icon angle"
                 :aria-hidden="expanded">
@@ -45,6 +45,19 @@ export default {
     data: v => ({
         expanded: !v.collapsed,
     }),
+
+    watch: {
+        collapsed(value) {
+            this.expanded = !value;
+        },
+    },
+
+    methods: {
+        toggle() {
+            this.expanded = !this.expanded;
+            this.$emit(this.expanded ? 'expand' : 'collapse');
+        },
+    },
 };
 
 </script>
