@@ -1,7 +1,7 @@
 <template>
     <div class="box is-paddingless">
         <div :class="[
-                'header title is-5 has-padding-large has-background-light',
+                'header title is-5 is-marginless has-padding-large has-background-light',
                 { 'is-clickable': collapsible }
             ]"
             v-if="title"
