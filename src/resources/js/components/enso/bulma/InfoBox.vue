@@ -8,7 +8,8 @@
             @click="collapsible ? toggle() : null">
             <slot name="title"/>
             <span class="icon angle"
-                :aria-hidden="expanded">
+                :aria-hidden="expanded"
+                v-if="collapsible">
                 <fa icon="angle-up"/>
             </span>
         </div>
